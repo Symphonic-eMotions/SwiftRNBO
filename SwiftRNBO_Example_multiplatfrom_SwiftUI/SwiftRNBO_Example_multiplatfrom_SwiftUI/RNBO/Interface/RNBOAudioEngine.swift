@@ -15,23 +15,26 @@ class RNBOAudioEngine {
     private let distortionEffect: AVAudioUnitDistortion
     private let inputMixer: AVAudioMixerNode
     private let microphoneVolumeMixer: AVAudioMixerNode
-
-    private func initInput() {
-        let input = engine.inputNode
-        // let format = input.inputFormat(forBus: 0)
-        let format = avAudioUnit!.inputFormat(forBus: 0)
-
-        if format.channelCount > 0 {
-            if input.outputFormat(forBus: 0).sampleRate == format.sampleRate {
-                engine.connect(input, to: microphoneVolumeMixer, format: format)
-                engine.connect(microphoneVolumeMixer, to: inputMixer, format: format)
-                engine.connect(inputMixer, to: avAudioUnit!, format: format)
-            } else {
-                print("Could not connect input node: sample rate mismatch")
-            }
-        }
-    }
     
+    private func initInput() {
+        guard let avAudioUnit = avAudioUnit else {
+            print("AVAudioUnit is not initialized")
+            return
+        }
+        
+        let input = engine.inputNode
+        let inputFormat = input.outputFormat(forBus: 0)
+        let targetFormat = avAudioUnit.inputFormat(forBus: 0)
+        
+        print("Input node sample rate: \(inputFormat.sampleRate)")
+        print("AVAudioUnit sample rate: \(targetFormat.sampleRate)")
+
+        // Verbinden met AVAudioEngine's automatische conversie
+        engine.connect(input, to: microphoneVolumeMixer, format: inputFormat)
+        engine.connect(microphoneVolumeMixer, to: inputMixer, format: nil) // Laat AVAudioEngine het formaat bepalen
+        engine.connect(inputMixer, to: avAudioUnit, format: targetFormat)
+    }
+
     func setMicrophoneAmplitude(_ amp: Float) {
         microphoneVolumeMixer.outputVolume = amp
     }
@@ -39,16 +42,26 @@ class RNBOAudioEngine {
     init() {
         inputMixer = AVAudioMixerNode()
         microphoneVolumeMixer = AVAudioMixerNode()
+        distortionEffect = AVAudioUnitDistortion()
+        distortionEffect.loadFactoryPreset(.multiEcho1)
+        
+        // Stel de voorkeurssample rate in
         #if os(iOS)
             do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
-                try AVAudioSession.sharedInstance().setActive(true)
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
+                try session.setPreferredSampleRate(44100) // Stel de voorkeurssample rate in op 44100 Hz
+                try session.setActive(true)
+                
+                // Controleer de daadwerkelijke sample rate
+                let actualSampleRate = session.sampleRate
+                print("Actual sample rate after setup: \(actualSampleRate)")
             } catch {
                 print("Error setting up audio session: \(error.localizedDescription)")
             }
         #endif
-        distortionEffect = AVAudioUnitDistortion()
-        distortionEffect.loadFactoryPreset(.multiEcho1)
+        
+        // Initialiseer het audiobestand
         if let audioFileURL = Bundle.main.url(forResource: "Synth", withExtension: "aif") {
             do {
                 audioFile = try AVAudioFile(forReading: audioFileURL)
@@ -61,77 +74,83 @@ class RNBOAudioEngine {
             audioFile = nil
         }
 
+        // Definieer de AudioComponentDescription
         let type = kAudioUnitType_Effect
-
         let subType: OSType = 0x71717171
         let manufacturer: OSType = 0x70707070
-
         let description = AudioComponentDescription(componentType: type, componentSubType: subType, componentManufacturer: manufacturer, componentFlags: 0, componentFlagsMask: 0)
 
         let subclass = RNBOAudioUnit.self
 
+        // Registreer de AVAudioUnit subclass
         AUAudioUnit.registerSubclass(subclass, as: description, name: "RNBOAudioUnit", version: 1)
 
-        AVAudioUnit.instantiate(with: description, options: AudioComponentInstantiationOptions.loadOutOfProcess) { avAudioUnit, _ in
-            self.avAudioUnit = avAudioUnit! // save AVAudioUnit
-        }
-//        engine.attach(distortionEffect)
-        engine.attach(inputMixer)
-        engine.attach(microphoneVolumeMixer)
-        engine.attach(playerNode)
-        engine.attach(avAudioUnit!)
-        
-        microphoneVolumeMixer.outputVolume = 0.0
-        
-        switch AVCaptureDevice.authorizationStatus(for: .audio) {
-        case .authorized:
-            do {
-                puts("Inputs: authorized")
-
-                initInput()
+        // Instantiate de AVAudioUnit
+        AVAudioUnit.instantiate(with: description, options: AudioComponentInstantiationOptions.loadOutOfProcess) { [weak self] avAudioUnit, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error instantiating AVAudioUnit: \(error.localizedDescription)")
+                return
             }
+            guard let avAudioUnit = avAudioUnit else {
+                print("Failed to instantiate AVAudioUnit")
+                return
+            }
+            self.avAudioUnit = avAudioUnit
 
-        case .notDetermined: do {
-                puts("Inputs: not determined")
-                AVCaptureDevice.requestAccess(for: .audio) { [self] granted in
+            // Attach de nodes aan de audio-engine
+            self.engine.attach(self.inputMixer)
+            self.engine.attach(self.microphoneVolumeMixer)
+            self.engine.attach(self.playerNode)
+            self.engine.attach(self.avAudioUnit!)
+            
+            self.microphoneVolumeMixer.outputVolume = 0.0
+
+            // Vraag om microfoon permissie indien nodig
+            switch AVCaptureDevice.authorizationStatus(for: .audio) {
+            case .authorized:
+                print("Inputs: authorized")
+                self.initInput()
+            case .notDetermined:
+                print("Inputs: not determined")
+                AVCaptureDevice.requestAccess(for: .audio) { granted in
                     if granted {
-                        initInput()
+                        self.initInput()
+                    } else {
+                        print("Microfoon toegang geweigerd")
                     }
                 }
-            }
-        case .denied: do {
-                puts("Inputs: denied")
-            }
-        case .restricted: do {
-                puts("Inputs: restricted")
+            case .denied:
+                print("Inputs: denied")
+            case .restricted:
+                print("Inputs: restricted")
+            @unknown default:
+                print("Inputs: unknown status")
             }
 
-        @unknown default:
+            // Controleer de sample rates opnieuw
+            let inputFormat = self.avAudioUnit!.inputFormat(forBus: 0)
+            let playerFormat = self.playerNode.outputFormat(forBus: 0)
+            print("Player node sample rate: \(playerFormat.sampleRate)")
+            print("AVAudioUnit sample rate: \(inputFormat.sampleRate)")
+
+            // Connect de playerNode naar de inputMixer met dezelfde sample rate
+            self.engine.connect(self.playerNode, to: self.inputMixer, format: inputFormat)
+            self.engine.connect(self.avAudioUnit!, to: self.engine.mainMixerNode, format: inputFormat)
+
+            // Connect de mainMixerNode naar de outputNode
+            let outputFormat = self.engine.outputNode.inputFormat(forBus: 0)
+            self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: outputFormat)
+
+            // Voorbereiden en starten van de engine
+            self.engine.prepare()
             do {
-                puts("Inputs: and now for something completely different")
+                try self.engine.start()
+                print("AVAudioEngine gestart")
+            } catch {
+                print("Failed to start AVAudioEngine: \(error.localizedDescription)")
             }
         }
-
-        assert(avAudioUnit!.auAudioUnit.inputBusses.count > 0)
-        assert(playerNode.outputFormat(forBus: 0).channelCount == 2)
-
-        // engine.connect(playerNode, to: avAudioUnit!, format: audioFile?.processingFormat)
-        let audioUnitFormat = avAudioUnit!.inputFormat(forBus: 0)
-//        let procFormat = audioFile?.processingFormat
-        engine.connect(playerNode, to: inputMixer, format: audioUnitFormat)
-        engine.connect(avAudioUnit!, to: engine.mainMixerNode, format: audioUnitFormat)
-
-        // test directly, works here:
-        // engine.connect(playerNode, to: engine.mainMixerNode, format: audioFile?.processingFormat)
-
-        let outputFormat = engine.outputNode.inputFormat(forBus: 0)
-        engine.connect(engine.mainMixerNode, to: engine.outputNode, format: outputFormat)
-
-        engine.prepare()
-        try! engine.start()
-
-        // must be called only when app is didBecomeActive
-        // play()
     }
 
     func getAudioUnit() -> RNBOAudioUnit {
