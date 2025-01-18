@@ -3,28 +3,141 @@
     "name": "untitled",
     "preset": {
       "__sps": {
-        "filters": {}
+        "poly": [
+          {
+            "__sps": {
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
+                },
+                "decay": {
+                  "value": 200
+                },
+                "release": {
+                  "value": 300
+                },
+                "sustain": {
+                  "value": 0.9
+                }
+              },
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
+            }
+          },
+          {
+            "__sps": {
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
+                },
+                "decay": {
+                  "value": 200
+                },
+                "release": {
+                  "value": 300
+                },
+                "sustain": {
+                  "value": 0.9
+                }
+              },
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
+            }
+          },
+          {
+            "__sps": {
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
+                },
+                "decay": {
+                  "value": 200
+                },
+                "release": {
+                  "value": 300
+                },
+                "sustain": {
+                  "value": 0.9
+                }
+              },
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
+            }
+          },
+          {
+            "__sps": {
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
+                },
+                "decay": {
+                  "value": 200
+                },
+                "release": {
+                  "value": 300
+                },
+                "sustain": {
+                  "value": 0.9
+                }
+              },
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
+            }
+          }
+        ]
       },
-      "cutoff": {
-        "value": 0
+      "filter": {
+        "value": 12000
       },
-      "freq1": {
-        "value": 220
-      },
-      "freq2": {
-        "value": 220
-      },
-      "play": {
+      "harmonicity": {
         "value": 1
       },
-      "resonance": {
-        "value": 0.5
-      },
-      "vol1": {
-        "value": 0
-      },
-      "vol2": {
-        "value": 0
+      "mod_index": {
+        "value": 1
       }
     }
   }
