@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 6,
+			"minor" : 6,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 1394.0, 331.0, 640.0, 480.0 ],
+		"rect" : [ 1083.0, 292.0, 640.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,31 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"format" : 4,
+					"id" : "obj-7",
+					"maxclass" : "number",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 55.0, 114.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "number",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 55.0, 73.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"autosave" : 1,
 					"id" : "obj-3",
@@ -98,14 +123,8 @@
 							"parsestring" : ""
 						}
 ,
-						"freq2" : 						{
-							"label" : "freq2",
-							"isEnum" : 0,
-							"parsestring" : ""
-						}
-,
-						"vol1" : 						{
-							"label" : "vol1",
+						"cutoff" : 						{
+							"label" : "cutoff",
 							"isEnum" : 0,
 							"parsestring" : ""
 						}
@@ -116,14 +135,8 @@
 							"parsestring" : ""
 						}
 ,
-						"play" : 						{
-							"label" : "play",
-							"isEnum" : 0,
-							"parsestring" : ""
-						}
-,
-						"cutoff" : 						{
-							"label" : "cutoff",
+						"freq2" : 						{
+							"label" : "freq2",
 							"isEnum" : 0,
 							"parsestring" : ""
 						}
@@ -133,14 +146,27 @@
 							"isEnum" : 0,
 							"parsestring" : ""
 						}
+,
+						"play" : 						{
+							"label" : "play",
+							"isEnum" : 0,
+							"parsestring" : ""
+						}
+,
+						"vol1" : 						{
+							"label" : "vol1",
+							"isEnum" : 0,
+							"parsestring" : ""
+						}
 
 					}
 ,
-					"rnboversion" : "1.2.2",
+					"rnboversion" : "1.2.6",
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_invisible" : 1,
 							"parameter_longname" : "rnbo~[1]",
+							"parameter_modmode" : 0,
 							"parameter_shortname" : "rnbo~[1]",
 							"parameter_type" : 3
 						}
@@ -211,7 +237,7 @@
 									"origin" : "swiftRnbo_test",
 									"type" : "rnbo",
 									"subtype" : "",
-									"embed" : 0,
+									"embed" : 1,
 									"snapshot" : 									{
 										"cutoff" : 										{
 											"value" : 0.0
@@ -256,7 +282,7 @@
 										"filename" : "swiftRnbo_test.maxsnap",
 										"filepath" : "~/Documents/Max 8/Snapshots",
 										"filepos" : -1,
-										"snapshotfileid" : "c579b2ab9029f41d91d53e4b85bba1ee"
+										"snapshotfileid" : "e000773a38a0ea6d7cf4595a8bbc5e7b"
 									}
 
 								}
@@ -295,6 +321,13 @@
 				}
 
 			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
  ],
 		"parameters" : 		{
 			"obj-3" : [ "rnbo~[1]", "rnbo~[1]", 0 ],
@@ -311,20 +344,6 @@
 		}
 ,
 		"dependency_cache" : [ 			{
-				"name" : "SwiftRNBO_Example.maxsnap",
-				"bootpath" : "~/Documents/Max 8/Snapshots",
-				"patcherrelativepath" : "../../../../Max 8/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "SwiftRNBO_Example[1].maxsnap",
-				"bootpath" : "~/Documents/Max 8/Snapshots",
-				"patcherrelativepath" : "../../../../Max 8/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "cherokee.aif",
 				"bootpath" : "C74:/media/msp",
 				"type" : "AIFF",
@@ -333,195 +352,19 @@
 , 			{
 				"name" : "swiftRnbo_test.maxsnap",
 				"bootpath" : "~/Documents/Max 8/Snapshots",
-				"patcherrelativepath" : "../../../../Max 8/Snapshots",
+				"patcherrelativepath" : "../../../../../Users/fjw/Documents/Max 8/Snapshots",
 				"type" : "mx@s",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "swiftRnbo_test.rnbopat",
-				"bootpath" : "~/Documents/Personal/Projects/SwiftRNBO-eldarsadykov/SwiftRNBO",
+				"bootpath" : "/Volumes/Storage/Active/GitHub/SwiftRNBO",
 				"patcherrelativepath" : ".",
 				"type" : "RBOP",
 				"implicit" : 1
 			}
  ],
-		"autosave" : 0,
-		"snapshot" : 		{
-			"filetype" : "C74Snapshot",
-			"version" : 2,
-			"minorversion" : 0,
-			"name" : "snapshotlist",
-			"origin" : "jpatcher",
-			"type" : "list",
-			"subtype" : "Undefined",
-			"embed" : 1,
-			"snapshot" : 			{
-				"valuedictionary" : 				{
-					"parameter_values" : 					{
-						"blob" : 						{
-							"rnbo~" : [ 								{
-									"filetype" : "C74Snapshot",
-									"version" : 2,
-									"minorversion" : 0,
-									"name" : "untitled",
-									"origin" : "b478a66d-ab11-11ed-a66d-a64a47a292b2",
-									"type" : "rnbo",
-									"subtype" : "",
-									"embed" : 1,
-									"snapshot" : 									{
-										"cutoff" : 										{
-											"value" : 0.0
-										}
-,
-										"resonance" : 										{
-											"value" : 0.5
-										}
-,
-										"vol1" : 										{
-											"value" : 0.0
-										}
-,
-										"__sps" : 										{
-											"filters" : 											{
-
-											}
-
-										}
-,
-										"play" : 										{
-											"value" : 1.0
-										}
-,
-										"freq2" : 										{
-											"value" : 220.0
-										}
-,
-										"__presetid" : "b478a66d-ab11-11ed-a66d-a64a47a292b2",
-										"vol2" : 										{
-											"value" : 0.0
-										}
-,
-										"freq1" : 										{
-											"value" : 220.0
-										}
-
-									}
-
-								}
- ]
-						}
-
-					}
-
-				}
-
-			}
-,
-			"snapshotlist" : 			{
-				"current_snapshot" : 0,
-				"entries" : [ 					{
-						"filetype" : "C74Snapshot",
-						"version" : 2,
-						"minorversion" : 0,
-						"name" : "SwiftRNBO_Example",
-						"origin" : "SwiftRNBO_Example",
-						"type" : "patcher",
-						"subtype" : "Undefined",
-						"embed" : 0,
-						"fileref" : 						{
-							"name" : "SwiftRNBO_Example",
-							"filename" : "SwiftRNBO_Example.maxsnap",
-							"filepath" : "~/Documents/Max 8/Snapshots",
-							"filepos" : -1,
-							"snapshotfileid" : "4d651552a17a01c2aeafc8eb9bb886b5"
-						}
-
-					}
-, 					{
-						"filetype" : "C74Snapshot",
-						"version" : 2,
-						"minorversion" : 0,
-						"name" : "SwiftRNBO_Example[1]",
-						"origin" : "SwiftRNBO_Example",
-						"type" : "patcher",
-						"subtype" : "Undefined",
-						"embed" : 0,
-						"snapshot" : 						{
-							"valuedictionary" : 							{
-								"parameter_values" : 								{
-									"blob" : 									{
-										"rnbo~" : [ 											{
-												"filetype" : "C74Snapshot",
-												"version" : 2,
-												"minorversion" : 0,
-												"name" : "untitled",
-												"origin" : "b478a66d-ab11-11ed-a66d-a64a47a292b2",
-												"type" : "rnbo",
-												"subtype" : "",
-												"embed" : 1,
-												"snapshot" : 												{
-													"cutoff" : 													{
-														"value" : 0.0
-													}
-,
-													"resonance" : 													{
-														"value" : 0.5
-													}
-,
-													"vol1" : 													{
-														"value" : 0.0
-													}
-,
-													"__sps" : 													{
-														"filters" : 														{
-
-														}
-
-													}
-,
-													"play" : 													{
-														"value" : 1.0
-													}
-,
-													"freq2" : 													{
-														"value" : 220.0
-													}
-,
-													"__presetid" : "b478a66d-ab11-11ed-a66d-a64a47a292b2",
-													"vol2" : 													{
-														"value" : 0.0
-													}
-,
-													"freq1" : 													{
-														"value" : 220.0
-													}
-
-												}
-
-											}
- ]
-									}
-
-								}
-
-							}
-
-						}
-,
-						"fileref" : 						{
-							"name" : "SwiftRNBO_Example[1]",
-							"filename" : "SwiftRNBO_Example[1].maxsnap",
-							"filepath" : "~/Documents/Max 8/Snapshots",
-							"filepos" : -1,
-							"snapshotfileid" : "6754ecb6282afaed1988690f440ad080"
-						}
-
-					}
- ]
-			}
-
-		}
-
+		"autosave" : 0
 	}
 
 }
