@@ -39,16 +39,19 @@ class RNBOAudioEngine {
     init() {
         inputMixer = AVAudioMixerNode()
         microphoneVolumeMixer = AVAudioMixerNode()
+
         #if os(iOS)
             do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
+                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
                 try AVAudioSession.sharedInstance().setActive(true)
             } catch {
-                print("Error setting up audio session: \(error.localizedDescription)")
+                print("Audio session error: \(error.localizedDescription)")
             }
         #endif
+
         distortionEffect = AVAudioUnitDistortion()
         distortionEffect.loadFactoryPreset(.multiEcho1)
+
         if let audioFileURL = Bundle.main.url(forResource: "Synth", withExtension: "aif") {
             do {
                 audioFile = try AVAudioFile(forReading: audioFileURL)
@@ -62,77 +65,94 @@ class RNBOAudioEngine {
         }
 
         let type = kAudioUnitType_Effect
-
         let subType: OSType = 0x71717171
         let manufacturer: OSType = 0x70707070
 
-        let description = AudioComponentDescription(componentType: type, componentSubType: subType, componentManufacturer: manufacturer, componentFlags: 0, componentFlagsMask: 0)
+        let description = AudioComponentDescription(
+            componentType: type,
+            componentSubType: subType,
+            componentManufacturer: manufacturer,
+            componentFlags: 0,
+            componentFlagsMask: 0
+        )
 
-        let subclass = RNBOAudioUnit.self
+        AUAudioUnit.registerSubclass(RNBOAudioUnit.self, as: description, name: "RNBOAudioUnit", version: 1)
 
-        AUAudioUnit.registerSubclass(subclass, as: description, name: "RNBOAudioUnit", version: 1)
+        AVAudioUnit.instantiate(with: description, options: .loadOutOfProcess) { avAudioUnit, error in
+            guard let avAudioUnit = avAudioUnit, error == nil else {
+                print("Error instantiating AVAudioUnit: \(error!.localizedDescription)")
+                return
+            }
 
-        AVAudioUnit.instantiate(with: description, options: AudioComponentInstantiationOptions.loadOutOfProcess) { avAudioUnit, _ in
-            self.avAudioUnit = avAudioUnit! // save AVAudioUnit
+            self.avAudioUnit = avAudioUnit
+
+            DispatchQueue.main.async {
+                self.setupAudioChain()
+            }
+        }
+    }
+
+    private func setupAudioChain() {
+        guard let avAudioUnit = avAudioUnit else {
+            print("avAudioUnit not ready!")
+            return
         }
 //        engine.attach(distortionEffect)
         engine.attach(inputMixer)
         engine.attach(microphoneVolumeMixer)
         engine.attach(playerNode)
-        engine.attach(avAudioUnit!)
-        
+        engine.attach(avAudioUnit)
+
         microphoneVolumeMixer.outputVolume = 0.0
-        
-        switch AVCaptureDevice.authorizationStatus(for: .audio) {
-        case .authorized:
-            do {
-                puts("Inputs: authorized")
 
-                initInput()
-            }
+        let input = engine.inputNode
+        let inputFormat = input.outputFormat(forBus: 0)
+        let audioUnitInputFormat = avAudioUnit.inputFormat(forBus: 0)
 
-        case .notDetermined: do {
-                puts("Inputs: not determined")
-                AVCaptureDevice.requestAccess(for: .audio) { [self] granted in
-                    if granted {
-                        initInput()
-                    }
-                }
-            }
-        case .denied: do {
-                puts("Inputs: denied")
-            }
-        case .restricted: do {
-                puts("Inputs: restricted")
-            }
+        // Match input node sample rate to audio unit's input sample rate
+        if inputFormat.sampleRate != audioUnitInputFormat.sampleRate {
+            print("Input node sample rate: \(inputFormat.sampleRate)")
+            print("AudioUnit sample rate: \(audioUnitInputFormat.sampleRate)")
 
-        @unknown default:
-            do {
-                puts("Inputs: and now for something completely different")
-            }
+            // Fix mismatch by converting formats via mixers
+            engine.connect(input, to: microphoneVolumeMixer, format: inputFormat)
+            engine.connect(microphoneVolumeMixer, to: inputMixer, format: inputFormat)
+
+            // Use mixer to match sample rate
+            engine.connect(inputMixer, to: avAudioUnit, format: audioUnitInputFormat)
+        } else {
+            // Direct connection if rates match
+            engine.connect(input, to: microphoneVolumeMixer, format: inputFormat)
+            engine.connect(microphoneVolumeMixer, to: inputMixer, format: inputFormat)
+            engine.connect(inputMixer, to: avAudioUnit, format: inputFormat)
         }
 
-        assert(avAudioUnit!.auAudioUnit.inputBusses.count > 0)
-        assert(playerNode.outputFormat(forBus: 0).channelCount == 2)
+        // Player node chain (optional, for audio file playback)
+        if let audioFile = audioFile {
+            let playerFormat = audioFile.processingFormat
+            engine.connect(playerNode, to: inputMixer, format: playerFormat)
+        }
 
-        // engine.connect(playerNode, to: avAudioUnit!, format: audioFile?.processingFormat)
-        let audioUnitFormat = avAudioUnit!.inputFormat(forBus: 0)
-//        let procFormat = audioFile?.processingFormat
-        engine.connect(playerNode, to: inputMixer, format: audioUnitFormat)
-        engine.connect(avAudioUnit!, to: engine.mainMixerNode, format: audioUnitFormat)
+        // Audio Unit to main mixer
+        let audioUnitOutputFormat = avAudioUnit.outputFormat(forBus: 0)
+        engine.connect(avAudioUnit, to: engine.mainMixerNode, format: audioUnitOutputFormat)
 
-        // test directly, works here:
-        // engine.connect(playerNode, to: engine.mainMixerNode, format: audioFile?.processingFormat)
-
+        // Main mixer to output node
         let outputFormat = engine.outputNode.inputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: outputFormat)
 
         engine.prepare()
-        try! engine.start()
 
         // must be called only when app is didBecomeActive
         // play()
+        do {
+            try engine.start()
+            print("Audio Engine started successfully.")
+        } catch {
+            print("Error starting audio engine: \(error.localizedDescription)")
+        }
     }
+
 
     func getAudioUnit() -> RNBOAudioUnit {
         return avAudioUnit!.auAudioUnit as! RNBOAudioUnit
