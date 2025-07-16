@@ -75,29 +75,29 @@ namespace RNBO {
 class rnbomatic : public PatcherInterfaceImpl {
 public:
 
-class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
+class RNBOSubpatcher_27 : public PatcherInterfaceImpl {
     
     friend class rnbomatic;
     
     public:
     
-    class RNBOSubpatcher_20 : public PatcherInterfaceImpl {
+    class RNBOSubpatcher_24 : public PatcherInterfaceImpl {
             
-            friend class RNBOSubpatcher_23;
+            friend class RNBOSubpatcher_27;
             friend class rnbomatic;
             
             public:
             
-            RNBOSubpatcher_20()
+            RNBOSubpatcher_24()
             {
             }
             
-            ~RNBOSubpatcher_20()
+            ~RNBOSubpatcher_24()
             {
             }
             
-            virtual RNBOSubpatcher_23* getPatcher() const {
-                return static_cast<RNBOSubpatcher_23 *>(_parentPatcher);
+            virtual RNBOSubpatcher_27* getPatcher() const {
+                return static_cast<RNBOSubpatcher_27 *>(_parentPatcher);
             }
             
             rnbomatic* getTopLevelPatcher() {
@@ -954,23 +954,23 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             
     };
     
-    class RNBOSubpatcher_21 : public PatcherInterfaceImpl {
+    class RNBOSubpatcher_25 : public PatcherInterfaceImpl {
             
-            friend class RNBOSubpatcher_23;
+            friend class RNBOSubpatcher_27;
             friend class rnbomatic;
             
             public:
             
-            RNBOSubpatcher_21()
+            RNBOSubpatcher_25()
             {
             }
             
-            ~RNBOSubpatcher_21()
+            ~RNBOSubpatcher_25()
             {
             }
             
-            virtual RNBOSubpatcher_23* getPatcher() const {
-                return static_cast<RNBOSubpatcher_23 *>(_parentPatcher);
+            virtual RNBOSubpatcher_27* getPatcher() const {
+                return static_cast<RNBOSubpatcher_27 *>(_parentPatcher);
             }
             
             rnbomatic* getTopLevelPatcher() {
@@ -1565,23 +1565,23 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             
     };
     
-    class RNBOSubpatcher_22 : public PatcherInterfaceImpl {
+    class RNBOSubpatcher_26 : public PatcherInterfaceImpl {
             
-            friend class RNBOSubpatcher_23;
+            friend class RNBOSubpatcher_27;
             friend class rnbomatic;
             
             public:
             
-            RNBOSubpatcher_22()
+            RNBOSubpatcher_26()
             {
             }
             
-            ~RNBOSubpatcher_22()
+            ~RNBOSubpatcher_26()
             {
             }
             
-            virtual RNBOSubpatcher_23* getPatcher() const {
-                return static_cast<RNBOSubpatcher_23 *>(_parentPatcher);
+            virtual RNBOSubpatcher_27* getPatcher() const {
+                return static_cast<RNBOSubpatcher_27 *>(_parentPatcher);
             }
             
             rnbomatic* getTopLevelPatcher() {
@@ -3020,11 +3020,11 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             
     };
     
-    RNBOSubpatcher_23()
+    RNBOSubpatcher_27()
     {
     }
     
-    ~RNBOSubpatcher_23()
+    ~RNBOSubpatcher_27()
     {
         delete this->p_01;
         delete this->p_02;
@@ -3249,15 +3249,15 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     void getState(PatcherStateInterface& ) {}
     
     void setState() {
-        this->p_01 = new RNBOSubpatcher_20();
+        this->p_01 = new RNBOSubpatcher_24();
         this->p_01->setEngineAndPatcher(this->getEngine(), this);
         this->p_01->initialize();
         this->p_01->setParameterOffset(this->getParameterOffset(this->p_01));
-        this->p_02 = new RNBOSubpatcher_21();
+        this->p_02 = new RNBOSubpatcher_25();
         this->p_02->setEngineAndPatcher(this->getEngine(), this);
         this->p_02->initialize();
         this->p_02->setParameterOffset(this->getParameterOffset(this->p_02));
-        this->p_03 = new RNBOSubpatcher_22();
+        this->p_03 = new RNBOSubpatcher_26();
         this->p_03->setEngineAndPatcher(this->getEngine(), this);
         this->p_03->initialize();
         this->p_03->setParameterOffset(this->getParameterOffset(this->p_03));
@@ -3305,47 +3305,27 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         switch (index) {
         case 0:
             {
-            this->param_12_value_set(v);
-            break;
-            }
-        case 8:
-            {
-            this->param_13_value_set(v);
-            break;
-            }
-        case 16:
-            {
-            this->param_14_value_set(v);
-            break;
-            }
-        case 24:
-            {
-            this->param_15_value_set(v);
-            break;
-            }
-        case 32:
-            {
             this->param_04_value_set(v);
             break;
             }
-        case 33:
+        case 1:
             {
             this->param_05_value_set(v);
             break;
             }
-        case 34:
+        case 2:
             {
             this->param_06_value_set(v);
             break;
             }
-        case 35:
+        case 3:
             {
             this->param_07_value_set(v);
             break;
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 this->p_01->setParameterValue(index, v, time);
@@ -3381,39 +3361,23 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         switch (index) {
         case 0:
             {
-            return this->param_12_value;
-            }
-        case 8:
-            {
-            return this->param_13_value;
-            }
-        case 16:
-            {
-            return this->param_14_value;
-            }
-        case 24:
-            {
-            return this->param_15_value;
-            }
-        case 32:
-            {
             return this->param_04_value;
             }
-        case 33:
+        case 1:
             {
             return this->param_05_value;
             }
-        case 34:
+        case 2:
             {
             return this->param_06_value;
             }
-        case 35:
+        case 3:
             {
             return this->param_07_value;
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 return this->p_01->getParameterValue(index);
@@ -3435,134 +3399,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     
     ParameterValue getPolyParameterValue(PatcherInterface** voices, ParameterIndex index)  {
         switch (index) {
-        case 0:
-            {
-            return voices[0]->getParameterValue(index - 0);
-            }
-        case 1:
-            {
-            return voices[1]->getParameterValue(index - 1);
-            }
-        case 2:
-            {
-            return voices[2]->getParameterValue(index - 2);
-            }
-        case 3:
-            {
-            return voices[3]->getParameterValue(index - 3);
-            }
-        case 4:
-            {
-            return voices[4]->getParameterValue(index - 4);
-            }
-        case 5:
-            {
-            return voices[5]->getParameterValue(index - 5);
-            }
-        case 6:
-            {
-            return voices[6]->getParameterValue(index - 6);
-            }
-        case 7:
-            {
-            return voices[7]->getParameterValue(index - 7);
-            }
-        case 8:
-            {
-            return voices[0]->getParameterValue(index - 0);
-            }
-        case 9:
-            {
-            return voices[1]->getParameterValue(index - 1);
-            }
-        case 10:
-            {
-            return voices[2]->getParameterValue(index - 2);
-            }
-        case 11:
-            {
-            return voices[3]->getParameterValue(index - 3);
-            }
-        case 12:
-            {
-            return voices[4]->getParameterValue(index - 4);
-            }
-        case 13:
-            {
-            return voices[5]->getParameterValue(index - 5);
-            }
-        case 14:
-            {
-            return voices[6]->getParameterValue(index - 6);
-            }
-        case 15:
-            {
-            return voices[7]->getParameterValue(index - 7);
-            }
-        case 16:
-            {
-            return voices[0]->getParameterValue(index - 0);
-            }
-        case 17:
-            {
-            return voices[1]->getParameterValue(index - 1);
-            }
-        case 18:
-            {
-            return voices[2]->getParameterValue(index - 2);
-            }
-        case 19:
-            {
-            return voices[3]->getParameterValue(index - 3);
-            }
-        case 20:
-            {
-            return voices[4]->getParameterValue(index - 4);
-            }
-        case 21:
-            {
-            return voices[5]->getParameterValue(index - 5);
-            }
-        case 22:
-            {
-            return voices[6]->getParameterValue(index - 6);
-            }
-        case 23:
-            {
-            return voices[7]->getParameterValue(index - 7);
-            }
-        case 24:
-            {
-            return voices[0]->getParameterValue(index - 0);
-            }
-        case 25:
-            {
-            return voices[1]->getParameterValue(index - 1);
-            }
-        case 26:
-            {
-            return voices[2]->getParameterValue(index - 2);
-            }
-        case 27:
-            {
-            return voices[3]->getParameterValue(index - 3);
-            }
-        case 28:
-            {
-            return voices[4]->getParameterValue(index - 4);
-            }
-        case 29:
-            {
-            return voices[5]->getParameterValue(index - 5);
-            }
-        case 30:
-            {
-            return voices[6]->getParameterValue(index - 6);
-            }
-        case 31:
-            {
-            return voices[7]->getParameterValue(index - 7);
-            }
         default:
             {
             return voices[0]->getParameterValue(index);
@@ -3577,166 +3413,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         MillisecondTime time
     ) {
         switch (index) {
-        case 0:
-            {
-            voices[0]->setParameterValue(index - 0, value, time);
-            break;
-            }
-        case 1:
-            {
-            voices[1]->setParameterValue(index - 1, value, time);
-            break;
-            }
-        case 2:
-            {
-            voices[2]->setParameterValue(index - 2, value, time);
-            break;
-            }
-        case 3:
-            {
-            voices[3]->setParameterValue(index - 3, value, time);
-            break;
-            }
-        case 4:
-            {
-            voices[4]->setParameterValue(index - 4, value, time);
-            break;
-            }
-        case 5:
-            {
-            voices[5]->setParameterValue(index - 5, value, time);
-            break;
-            }
-        case 6:
-            {
-            voices[6]->setParameterValue(index - 6, value, time);
-            break;
-            }
-        case 7:
-            {
-            voices[7]->setParameterValue(index - 7, value, time);
-            break;
-            }
-        case 8:
-            {
-            voices[0]->setParameterValue(index - 0, value, time);
-            break;
-            }
-        case 9:
-            {
-            voices[1]->setParameterValue(index - 1, value, time);
-            break;
-            }
-        case 10:
-            {
-            voices[2]->setParameterValue(index - 2, value, time);
-            break;
-            }
-        case 11:
-            {
-            voices[3]->setParameterValue(index - 3, value, time);
-            break;
-            }
-        case 12:
-            {
-            voices[4]->setParameterValue(index - 4, value, time);
-            break;
-            }
-        case 13:
-            {
-            voices[5]->setParameterValue(index - 5, value, time);
-            break;
-            }
-        case 14:
-            {
-            voices[6]->setParameterValue(index - 6, value, time);
-            break;
-            }
-        case 15:
-            {
-            voices[7]->setParameterValue(index - 7, value, time);
-            break;
-            }
-        case 16:
-            {
-            voices[0]->setParameterValue(index - 0, value, time);
-            break;
-            }
-        case 17:
-            {
-            voices[1]->setParameterValue(index - 1, value, time);
-            break;
-            }
-        case 18:
-            {
-            voices[2]->setParameterValue(index - 2, value, time);
-            break;
-            }
-        case 19:
-            {
-            voices[3]->setParameterValue(index - 3, value, time);
-            break;
-            }
-        case 20:
-            {
-            voices[4]->setParameterValue(index - 4, value, time);
-            break;
-            }
-        case 21:
-            {
-            voices[5]->setParameterValue(index - 5, value, time);
-            break;
-            }
-        case 22:
-            {
-            voices[6]->setParameterValue(index - 6, value, time);
-            break;
-            }
-        case 23:
-            {
-            voices[7]->setParameterValue(index - 7, value, time);
-            break;
-            }
-        case 24:
-            {
-            voices[0]->setParameterValue(index - 0, value, time);
-            break;
-            }
-        case 25:
-            {
-            voices[1]->setParameterValue(index - 1, value, time);
-            break;
-            }
-        case 26:
-            {
-            voices[2]->setParameterValue(index - 2, value, time);
-            break;
-            }
-        case 27:
-            {
-            voices[3]->setParameterValue(index - 3, value, time);
-            break;
-            }
-        case 28:
-            {
-            voices[4]->setParameterValue(index - 4, value, time);
-            break;
-            }
-        case 29:
-            {
-            voices[5]->setParameterValue(index - 5, value, time);
-            break;
-            }
-        case 30:
-            {
-            voices[6]->setParameterValue(index - 6, value, time);
-            break;
-            }
-        case 31:
-            {
-            voices[7]->setParameterValue(index - 7, value, time);
-            break;
-            }
         default:
             {
             for (Index i = 0; i < 8; i++)
@@ -3754,158 +3430,30 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     }
     
     ParameterIndex getNumParameters() const {
-        return 36 + this->p_01->getNumParameters() + this->p_02->getNumParameters() + this->p_03->getNumParameters();
+        return 4 + this->p_01->getNumParameters() + this->p_02->getNumParameters() + this->p_03->getNumParameters();
     }
     
     ConstCharPointer getParameterName(ParameterIndex index) const {
         switch (index) {
         case 0:
             {
-            return "1/cutoff";
+            return "cutoff";
             }
         case 1:
             {
-            return "2/cutoff";
+            return "overblow";
             }
         case 2:
             {
-            return "3/cutoff";
-            }
-        case 3:
-            {
-            return "4/cutoff";
-            }
-        case 4:
-            {
-            return "5/cutoff";
-            }
-        case 5:
-            {
-            return "6/cutoff";
-            }
-        case 6:
-            {
-            return "7/cutoff";
-            }
-        case 7:
-            {
-            return "8/cutoff";
-            }
-        case 8:
-            {
-            return "1/overblow";
-            }
-        case 9:
-            {
-            return "2/overblow";
-            }
-        case 10:
-            {
-            return "3/overblow";
-            }
-        case 11:
-            {
-            return "4/overblow";
-            }
-        case 12:
-            {
-            return "5/overblow";
-            }
-        case 13:
-            {
-            return "6/overblow";
-            }
-        case 14:
-            {
-            return "7/overblow";
-            }
-        case 15:
-            {
-            return "8/overblow";
-            }
-        case 16:
-            {
-            return "1/Q";
-            }
-        case 17:
-            {
-            return "2/Q";
-            }
-        case 18:
-            {
-            return "3/Q";
-            }
-        case 19:
-            {
-            return "4/Q";
-            }
-        case 20:
-            {
-            return "5/Q";
-            }
-        case 21:
-            {
-            return "6/Q";
-            }
-        case 22:
-            {
-            return "7/Q";
-            }
-        case 23:
-            {
-            return "8/Q";
-            }
-        case 24:
-            {
-            return "1/harmonics";
-            }
-        case 25:
-            {
-            return "2/harmonics";
-            }
-        case 26:
-            {
-            return "3/harmonics";
-            }
-        case 27:
-            {
-            return "4/harmonics";
-            }
-        case 28:
-            {
-            return "5/harmonics";
-            }
-        case 29:
-            {
-            return "6/harmonics";
-            }
-        case 30:
-            {
-            return "7/harmonics";
-            }
-        case 31:
-            {
-            return "8/harmonics";
-            }
-        case 32:
-            {
-            return "cutoff";
-            }
-        case 33:
-            {
-            return "overblow";
-            }
-        case 34:
-            {
             return "Q";
             }
-        case 35:
+        case 3:
             {
             return "harmonics";
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 return this->p_01->getParameterName(index);
@@ -3929,151 +3477,23 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         switch (index) {
         case 0:
             {
-            return "poly/1/cutoff";
+            return "poly/cutoff";
             }
         case 1:
             {
-            return "poly/2/cutoff";
+            return "poly/overblow";
             }
         case 2:
             {
-            return "poly/3/cutoff";
-            }
-        case 3:
-            {
-            return "poly/4/cutoff";
-            }
-        case 4:
-            {
-            return "poly/5/cutoff";
-            }
-        case 5:
-            {
-            return "poly/6/cutoff";
-            }
-        case 6:
-            {
-            return "poly/7/cutoff";
-            }
-        case 7:
-            {
-            return "poly/8/cutoff";
-            }
-        case 8:
-            {
-            return "poly/1/overblow";
-            }
-        case 9:
-            {
-            return "poly/2/overblow";
-            }
-        case 10:
-            {
-            return "poly/3/overblow";
-            }
-        case 11:
-            {
-            return "poly/4/overblow";
-            }
-        case 12:
-            {
-            return "poly/5/overblow";
-            }
-        case 13:
-            {
-            return "poly/6/overblow";
-            }
-        case 14:
-            {
-            return "poly/7/overblow";
-            }
-        case 15:
-            {
-            return "poly/8/overblow";
-            }
-        case 16:
-            {
-            return "poly/1/Q";
-            }
-        case 17:
-            {
-            return "poly/2/Q";
-            }
-        case 18:
-            {
-            return "poly/3/Q";
-            }
-        case 19:
-            {
-            return "poly/4/Q";
-            }
-        case 20:
-            {
-            return "poly/5/Q";
-            }
-        case 21:
-            {
-            return "poly/6/Q";
-            }
-        case 22:
-            {
-            return "poly/7/Q";
-            }
-        case 23:
-            {
-            return "poly/8/Q";
-            }
-        case 24:
-            {
-            return "poly/1/harmonics";
-            }
-        case 25:
-            {
-            return "poly/2/harmonics";
-            }
-        case 26:
-            {
-            return "poly/3/harmonics";
-            }
-        case 27:
-            {
-            return "poly/4/harmonics";
-            }
-        case 28:
-            {
-            return "poly/5/harmonics";
-            }
-        case 29:
-            {
-            return "poly/6/harmonics";
-            }
-        case 30:
-            {
-            return "poly/7/harmonics";
-            }
-        case 31:
-            {
-            return "poly/8/harmonics";
-            }
-        case 32:
-            {
-            return "poly/cutoff";
-            }
-        case 33:
-            {
-            return "poly/overblow";
-            }
-        case 34:
-            {
             return "poly/Q";
             }
-        case 35:
+        case 3:
             {
             return "poly/harmonics";
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 return this->p_01->getParameterId(index);
@@ -4108,7 +3528,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 info->saveable = true;
                 info->transmittable = true;
                 info->initialized = true;
-                info->visible = true;
+                info->visible = false;
                 info->displayName = "";
                 info->unit = "";
                 info->ioType = IOTypeUndefined;
@@ -4118,16 +3538,16 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             case 1:
                 {
                 info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
+                info->initialValue = 1.5;
+                info->min = 0.1;
+                info->max = 5;
+                info->exponent = 1;
                 info->steps = 0;
                 info->debug = false;
                 info->saveable = true;
                 info->transmittable = true;
                 info->initialized = true;
-                info->visible = true;
+                info->visible = false;
                 info->displayName = "";
                 info->unit = "";
                 info->ioType = IOTypeUndefined;
@@ -4137,16 +3557,16 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             case 2:
                 {
                 info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
+                info->initialValue = 3;
+                info->min = 0.01;
+                info->max = 10;
+                info->exponent = 1;
                 info->steps = 0;
                 info->debug = false;
                 info->saveable = true;
                 info->transmittable = true;
                 info->initialized = true;
-                info->visible = true;
+                info->visible = false;
                 info->displayName = "";
                 info->unit = "";
                 info->ioType = IOTypeUndefined;
@@ -4154,614 +3574,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 break;
                 }
             case 3:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 4:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 5:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 6:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 7:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 8:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 9:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 10:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 11:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 12:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 13:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 14:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 15:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 16:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 17:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 18:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 19:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 20:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 21:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 22:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 23:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 24:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 25:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 26:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 27:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 28:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 29:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 30:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 31:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.1;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = true;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 32:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 880;
-                info->min = 100;
-                info->max = 8000;
-                info->exponent = 2;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = false;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 33:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 1.5;
-                info->min = 0.1;
-                info->max = 5;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = false;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 34:
-                {
-                info->type = ParameterTypeNumber;
-                info->initialValue = 3;
-                info->min = 0.01;
-                info->max = 10;
-                info->exponent = 1;
-                info->steps = 0;
-                info->debug = false;
-                info->saveable = true;
-                info->transmittable = true;
-                info->initialized = true;
-                info->visible = false;
-                info->displayName = "";
-                info->unit = "";
-                info->ioType = IOTypeUndefined;
-                info->signalIndex = INVALID_INDEX;
-                break;
-                }
-            case 35:
                 {
                 info->type = ParameterTypeNumber;
                 info->initialValue = 3;
@@ -4782,7 +3594,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 }
             default:
                 {
-                index -= 36;
+                index -= 4;
     
                 if (index < this->p_01->getNumParameters())
                     this->p_01->getParameterInfo(index, info);
@@ -4814,13 +3626,13 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     
     ParameterIndex getParameterOffset(BaseInterface* subpatcher) const {
         if (subpatcher == this->p_01)
-            return 36;
+            return 4;
     
         if (subpatcher == this->p_02)
-            return 36 + this->p_01->getNumParameters();
+            return 4 + this->p_01->getNumParameters();
     
         if (subpatcher == this->p_03)
-            return 36 + this->p_01->getNumParameters() + this->p_02->getNumParameters();
+            return 4 + this->p_01->getNumParameters() + this->p_02->getNumParameters();
     
         return 0;
     }
@@ -4846,14 +3658,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     ParameterValue convertToNormalizedParameterValue(ParameterIndex index, ParameterValue value) const {
         switch (index) {
         case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 32:
             {
             {
                 value = (value < 100 ? 100 : (value > 8000 ? 8000 : value));
@@ -4868,15 +3672,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 return normalizedValue;
             }
             }
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 33:
+        case 1:
             {
             {
                 value = (value < 0.1 ? 0.1 : (value > 5 ? 5 : value));
@@ -4884,15 +3680,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 return normalizedValue;
             }
             }
-        case 24:
-        case 25:
-        case 26:
-        case 27:
-        case 28:
-        case 29:
-        case 30:
-        case 31:
-        case 35:
+        case 3:
             {
             {
                 value = (value < 0.1 ? 0.1 : (value > 10 ? 10 : value));
@@ -4900,15 +3688,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 return normalizedValue;
             }
             }
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
-        case 34:
+        case 2:
             {
             {
                 value = (value < 0.01 ? 0.01 : (value > 10 ? 10 : value));
@@ -4918,7 +3698,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 return this->p_01->convertToNormalizedParameterValue(index, value);
@@ -4943,14 +3723,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     
         switch (index) {
         case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 32:
             {
             {
                 value = (value < 0 ? 0 : (value > 1 ? 1 : value));
@@ -4964,15 +3736,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 }
             }
             }
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 33:
+        case 1:
             {
             {
                 value = (value < 0 ? 0 : (value > 1 ? 1 : value));
@@ -4982,15 +3746,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 }
             }
             }
-        case 24:
-        case 25:
-        case 26:
-        case 27:
-        case 28:
-        case 29:
-        case 30:
-        case 31:
-        case 35:
+        case 3:
             {
             {
                 value = (value < 0 ? 0 : (value > 1 ? 1 : value));
@@ -5000,15 +3756,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
                 }
             }
             }
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
-        case 34:
+        case 2:
             {
             {
                 value = (value < 0 ? 0 : (value > 1 ? 1 : value));
@@ -5020,7 +3768,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 return this->p_01->convertFromNormalizedParameterValue(index, value);
@@ -5044,151 +3792,23 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         switch (index) {
         case 0:
             {
-            return this->param_12_value_constrain(value);
+            return this->param_04_value_constrain(value);
             }
         case 1:
             {
-            return this->param_12_value_constrain(value);
+            return this->param_05_value_constrain(value);
             }
         case 2:
             {
-            return this->param_12_value_constrain(value);
-            }
-        case 3:
-            {
-            return this->param_12_value_constrain(value);
-            }
-        case 4:
-            {
-            return this->param_12_value_constrain(value);
-            }
-        case 5:
-            {
-            return this->param_12_value_constrain(value);
-            }
-        case 6:
-            {
-            return this->param_12_value_constrain(value);
-            }
-        case 7:
-            {
-            return this->param_12_value_constrain(value);
-            }
-        case 8:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 9:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 10:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 11:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 12:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 13:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 14:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 15:
-            {
-            return this->param_13_value_constrain(value);
-            }
-        case 16:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 17:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 18:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 19:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 20:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 21:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 22:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 23:
-            {
-            return this->param_14_value_constrain(value);
-            }
-        case 24:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 25:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 26:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 27:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 28:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 29:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 30:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 31:
-            {
-            return this->param_15_value_constrain(value);
-            }
-        case 32:
-            {
-            return this->param_04_value_constrain(value);
-            }
-        case 33:
-            {
-            return this->param_05_value_constrain(value);
-            }
-        case 34:
-            {
             return this->param_06_value_constrain(value);
             }
-        case 35:
+        case 3:
             {
             return this->param_07_value_constrain(value);
             }
         default:
             {
-            index -= 36;
+            index -= 4;
     
             if (index < this->p_01->getNumParameters())
                 return this->p_01->constrainParameterValue(index, value);
@@ -5313,108 +3933,56 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
     
     protected:
     
-    void param_12_value_set(number v) {
-        v = this->param_12_value_constrain(v);
-        this->param_12_value = v;
-        this->sendPolyParameter(0, this->_voiceIndex, false);
-    
-        if (this->param_12_value != this->param_12_lastValue) {
-            this->getEngine()->presetTouched();
-            this->param_12_lastValue = this->param_12_value;
-        }
-    
-        this->slide_tilde_01_x_set(v);
-    }
-    
-    void param_13_value_set(number v) {
-        v = this->param_13_value_constrain(v);
-        this->param_13_value = v;
-        this->sendPolyParameter(8, this->_voiceIndex, false);
-    
-        if (this->param_13_value != this->param_13_lastValue) {
-            this->getEngine()->presetTouched();
-            this->param_13_lastValue = this->param_13_value;
-        }
-    
-        this->slide_tilde_02_x_set(v);
-    }
-    
-    void param_14_value_set(number v) {
-        v = this->param_14_value_constrain(v);
-        this->param_14_value = v;
-        this->sendPolyParameter(16, this->_voiceIndex, false);
-    
-        if (this->param_14_value != this->param_14_lastValue) {
-            this->getEngine()->presetTouched();
-            this->param_14_lastValue = this->param_14_value;
-        }
-    
-        this->slide_tilde_03_x_set(v);
-    }
-    
-    void param_15_value_set(number v) {
-        v = this->param_15_value_constrain(v);
-        this->param_15_value = v;
-        this->sendPolyParameter(24, this->_voiceIndex, false);
-    
-        if (this->param_15_value != this->param_15_lastValue) {
-            this->getEngine()->presetTouched();
-            this->param_15_lastValue = this->param_15_value;
-        }
-    
-        this->slide_tilde_04_x_set(v);
-    }
-    
     void param_04_value_set(number v) {
         v = this->param_04_value_constrain(v);
         this->param_04_value = v;
-        this->sendParameter(32, false);
+        this->sendParameter(0, false);
     
         if (this->param_04_value != this->param_04_lastValue) {
             this->getEngine()->presetTouched();
             this->param_04_lastValue = this->param_04_value;
         }
     
-        this->param_12_value_set(v);
+        this->slide_tilde_01_x_set(v);
     }
     
     void param_05_value_set(number v) {
         v = this->param_05_value_constrain(v);
         this->param_05_value = v;
-        this->sendParameter(33, false);
+        this->sendParameter(1, false);
     
         if (this->param_05_value != this->param_05_lastValue) {
             this->getEngine()->presetTouched();
             this->param_05_lastValue = this->param_05_value;
         }
     
-        this->param_13_value_set(v);
+        this->slide_tilde_02_x_set(v);
     }
     
     void param_06_value_set(number v) {
         v = this->param_06_value_constrain(v);
         this->param_06_value = v;
-        this->sendParameter(34, false);
+        this->sendParameter(2, false);
     
         if (this->param_06_value != this->param_06_lastValue) {
             this->getEngine()->presetTouched();
             this->param_06_lastValue = this->param_06_value;
         }
     
-        this->param_14_value_set(v);
+        this->slide_tilde_03_x_set(v);
     }
     
     void param_07_value_set(number v) {
         v = this->param_07_value_constrain(v);
         this->param_07_value = v;
-        this->sendParameter(35, false);
+        this->sendParameter(3, false);
     
         if (this->param_07_value != this->param_07_lastValue) {
             this->getEngine()->presetTouched();
             this->param_07_lastValue = this->param_07_value;
         }
     
-        this->param_15_value_set(v);
+        this->slide_tilde_04_x_set(v);
     }
     
     number msToSamps(MillisecondTime ms, number sampleRate) {
@@ -5483,7 +4051,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         this->mtof_tilde_01_innerMtoF_buffer = this->mtof_tilde_01_innerMtoF_buffer->allocateIfNeeded();
     }
     
-    static number param_12_value_constrain(number v) {
+    static number param_04_value_constrain(number v) {
         v = (v > 8000 ? 8000 : (v < 100 ? 100 : v));
         return v;
     }
@@ -5492,7 +4060,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         this->slide_tilde_01_x = v;
     }
     
-    static number param_13_value_constrain(number v) {
+    static number param_05_value_constrain(number v) {
         v = (v > 5 ? 5 : (v < 0.1 ? 0.1 : v));
         return v;
     }
@@ -5501,7 +4069,7 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         this->slide_tilde_02_x = v;
     }
     
-    static number param_14_value_constrain(number v) {
+    static number param_06_value_constrain(number v) {
         v = (v > 10 ? 10 : (v < 0.01 ? 0.01 : v));
         return v;
     }
@@ -5510,33 +4078,13 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         this->slide_tilde_03_x = v;
     }
     
-    static number param_15_value_constrain(number v) {
+    static number param_07_value_constrain(number v) {
         v = (v > 10 ? 10 : (v < 0.1 ? 0.1 : v));
         return v;
     }
     
     void slide_tilde_04_x_set(number v) {
         this->slide_tilde_04_x = v;
-    }
-    
-    static number param_04_value_constrain(number v) {
-        v = (v > 8000 ? 8000 : (v < 100 ? 100 : v));
-        return v;
-    }
-    
-    static number param_05_value_constrain(number v) {
-        v = (v > 5 ? 5 : (v < 0.1 ? 0.1 : v));
-        return v;
-    }
-    
-    static number param_06_value_constrain(number v) {
-        v = (v > 10 ? 10 : (v < 0.01 ? 0.01 : v));
-        return v;
-    }
-    
-    static number param_07_value_constrain(number v) {
-        v = (v > 10 ? 10 : (v < 0.1 ? 0.1 : v));
-        return v;
     }
     
     void notein_01_outchannel_set(number ) {}
@@ -6499,50 +5047,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         this->param_07_value_set(preset["value"]);
     }
     
-    void param_12_getPresetValue(PatcherStateInterface& preset) {
-        preset["value"] = this->param_12_value;
-    }
-    
-    void param_12_setPresetValue(PatcherStateInterface& preset) {
-        if ((bool)(stateIsEmpty(preset)))
-            return;
-    
-        this->param_12_value_set(preset["value"]);
-    }
-    
-    void param_13_getPresetValue(PatcherStateInterface& preset) {
-        preset["value"] = this->param_13_value;
-    }
-    
-    void param_13_setPresetValue(PatcherStateInterface& preset) {
-        if ((bool)(stateIsEmpty(preset)))
-            return;
-    
-        this->param_13_value_set(preset["value"]);
-    }
-    
-    void param_14_getPresetValue(PatcherStateInterface& preset) {
-        preset["value"] = this->param_14_value;
-    }
-    
-    void param_14_setPresetValue(PatcherStateInterface& preset) {
-        if ((bool)(stateIsEmpty(preset)))
-            return;
-    
-        this->param_14_value_set(preset["value"]);
-    }
-    
-    void param_15_getPresetValue(PatcherStateInterface& preset) {
-        preset["value"] = this->param_15_value;
-    }
-    
-    void param_15_setPresetValue(PatcherStateInterface& preset) {
-        if ((bool)(stateIsEmpty(preset)))
-            return;
-    
-        this->param_15_value_set(preset["value"]);
-    }
-    
     void midiouthelper_sendMidi(number v) {
         this->midiouthelper_midiout_set(v);
     }
@@ -6603,10 +5107,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         slide_tilde_04_up = 20;
         slide_tilde_04_down = 20;
         param_07_value = 3;
-        param_12_value = 880;
-        param_13_value = 1.5;
-        param_14_value = 3;
-        param_15_value = 3;
         _currentTime = 0;
         audioProcessSampleCount = 0;
         sampleOffsetIntoNextAudioBuffer = 0;
@@ -6669,10 +5169,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         ip_01_setupDone = false;
         slide_tilde_04_prev = 0;
         param_07_lastValue = 0;
-        param_12_lastValue = 0;
-        param_13_lastValue = 0;
-        param_14_lastValue = 0;
-        param_15_lastValue = 0;
         stackprotect_count = 0;
         _voiceIndex = 0;
         _noteNumber = 0;
@@ -6716,10 +5212,6 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         number slide_tilde_04_up;
         number slide_tilde_04_down;
         number param_07_value;
-        number param_12_value;
-        number param_13_value;
-        number param_14_value;
-        number param_15_value;
         MillisecondTime _currentTime;
         SampleIndex audioProcessSampleCount;
         SampleIndex sampleOffsetIntoNextAudioBuffer;
@@ -6779,18 +5271,14 @@ class RNBOSubpatcher_23 : public PatcherInterfaceImpl {
         bool ip_01_setupDone;
         number slide_tilde_04_prev;
         number param_07_lastValue;
-        number param_12_lastValue;
-        number param_13_lastValue;
-        number param_14_lastValue;
-        number param_15_lastValue;
         number stackprotect_count;
         Index _voiceIndex;
         Int _noteNumber;
         Index isMuted;
         ParameterIndex parameterOffset;
-        RNBOSubpatcher_20* p_01;
-        RNBOSubpatcher_21* p_02;
-        RNBOSubpatcher_22* p_03;
+        RNBOSubpatcher_24* p_01;
+        RNBOSubpatcher_25* p_02;
+        RNBOSubpatcher_26* p_03;
     
 };
 
@@ -7022,7 +5510,7 @@ void getState(PatcherStateInterface& ) {}
 
 void setState() {
     for (Index i = 0; i < 8; i++) {
-        this->poly[(Index)i] = new RNBOSubpatcher_23();
+        this->poly[(Index)i] = new RNBOSubpatcher_27();
         this->poly[(Index)i]->setEngineAndPatcher(this->getEngine(), this);
         this->poly[(Index)i]->initialize();
         this->poly[(Index)i]->setParameterOffset(this->getParameterOffset(this->poly[0]));
@@ -7762,7 +6250,7 @@ static number param_08_value_constrain(number v) {
 void poly_cutoff_set(number v) {
     for (number i = 0; i < 8; i++) {
         if (i + 1 == this->poly_target || 0 == this->poly_target) {
-            this->poly[(Index)i]->setParameterValue(32, v, this->_currentTime);
+            this->poly[(Index)i]->setParameterValue(0, v, this->_currentTime);
         }
     }
 }
@@ -7775,7 +6263,7 @@ static number param_09_value_constrain(number v) {
 void poly_overblow_set(number v) {
     for (number i = 0; i < 8; i++) {
         if (i + 1 == this->poly_target || 0 == this->poly_target) {
-            this->poly[(Index)i]->setParameterValue(33, v, this->_currentTime);
+            this->poly[(Index)i]->setParameterValue(1, v, this->_currentTime);
         }
     }
 }
@@ -7788,7 +6276,7 @@ static number param_10_value_constrain(number v) {
 void poly_Q_set(number v) {
     for (number i = 0; i < 8; i++) {
         if (i + 1 == this->poly_target || 0 == this->poly_target) {
-            this->poly[(Index)i]->setParameterValue(34, v, this->_currentTime);
+            this->poly[(Index)i]->setParameterValue(2, v, this->_currentTime);
         }
     }
 }
@@ -7801,7 +6289,7 @@ static number param_11_value_constrain(number v) {
 void poly_harmonics_set(number v) {
     for (number i = 0; i < 8; i++) {
         if (i + 1 == this->poly_target || 0 == this->poly_target) {
-            this->poly[(Index)i]->setParameterValue(35, v, this->_currentTime);
+            this->poly[(Index)i]->setParameterValue(3, v, this->_currentTime);
         }
     }
 }
@@ -8740,7 +7228,7 @@ void assign_defaults()
     Index isMuted;
     indexlist paramInitIndices;
     indexlist paramInitOrder;
-    RNBOSubpatcher_23* poly[8];
+    RNBOSubpatcher_27* poly[8];
 
 };
 
