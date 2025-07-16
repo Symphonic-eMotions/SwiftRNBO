@@ -1,6 +1,7 @@
 #include <RNBO.h>
 #include <RNBO_MaxPresetAdapter.h>
 #include <RNBO_MidiStreamParser.h>
+#include <RNBO_MaxPlatformInterface.h>
 #include <json/json.hpp>
 #include <c74_min.h>
 #include <atomic>
@@ -51,8 +52,25 @@ using c74::min::flags;
 
 namespace {
 	const std::regex inportEventInRegex("^in[[:digit:]]+$");
-}
 
+	static MaxPlatformInterface maxPlatformInstance;
+
+	void LoggerOutputFunction(RNBO::LogLevel level, const char *message)
+	{
+		switch (level) {
+				case RNBO::LogLevel::Info:
+					c74::max::object_post(nullptr, message);
+					return;
+				case RNBO::LogLevel::Warning:
+					c74::max::object_warn(nullptr, message);
+					return;
+				case RNBO::LogLevel::Error:
+				default:
+					c74::max::object_error(nullptr, message);
+					return;
+		}
+	}
+}
 
 //attributes are thread safe as they just read/write parameters, which are thread safe in RNBO
 typedef c74::min::attribute<ParameterValue, c74::min::threadsafe::yes> attr_param;
@@ -531,6 +549,7 @@ class rnbo_external_wrapper :
 		virtual ~rnbo_external_wrapper() {
 			//make sure the process method isn't currently running
 			LockGuard guard(mDSPStateMutex);
+			mSetupClock.stop();
 			//stop the non audio thread processor
 			mProcessClock.stop();
 			//destroy buffers before killing notify, because we get a callback
@@ -539,6 +558,15 @@ class rnbo_external_wrapper :
 		}
 
 		rnbo_external_wrapper(const c74::min::atoms& args = {}) :
+			mSetupClock(this,
+				[this](const c74::min::atoms& _args, const int _inlet) -> c74::min::atoms {
+#ifdef RNBO_WRAPPER_HAS_AUDIO
+					mDSPOn = c74::max::sys_getdspobjdspstate(maxobj());
+#endif
+					if (!mDSPOn)
+						mProcessClock.delay(0); //start the scheduler
+					return { };
+				}),
 			mProcessClock(this,
 				[this](const c74::min::atoms& _args, const int _inlet) -> c74::min::atoms {
 					process_nodsp();
@@ -550,6 +578,7 @@ class rnbo_external_wrapper :
 					return { };
 				})
 		{
+
 			//some behaviors are slightly different in live
 			auto p = c74::max::gensym("#P");
 			if (p) {
@@ -678,7 +707,7 @@ class rnbo_external_wrapper :
 						if (std::regex_match(name, inportEventInRegex)) {
 							continue;
 						}
-						mInportMessages.emplace_back(std::make_unique<c74::min::message<>>(this, name,
+						mInportMessages.emplace_back(std::make_unique<c74::min::message<c74::min::threadsafe::yes>>(this, name,
 							[this, name](const c74::min::atoms& args, const int _inlet) -> c74::min::atoms {
 								//add the selector (as a symbol) and handle
 								c74::min::atoms withSelector = { c74::min::symbol(name.c_str()) };
@@ -729,7 +758,7 @@ class rnbo_external_wrapper :
 				mOutlets.emplace_back(mMIDIOutlet);
 			}
 
-			mNotify = std::make_unique<c74::min::message<>>(this, "notify",
+			mNotify = std::make_unique<c74::min::message<c74::min::threadsafe::yes>>(this, "notify",
 				[this](const c74::min::atoms& args, const int inlet) -> c74::min::atoms {
 					if (mSync && (args.size() == 5)) {
 						c74::min::notification n { args };
@@ -743,8 +772,8 @@ class rnbo_external_wrapper :
 			);
 
 			MaxExternalEventHandler::MessageEventCallback msgCallback = [this](MessageEvent event) {
-				if (mProcessing) {
-					mEventOutQueue.try_enqueue(event);
+				if (mProcessing && mIsInLive) {
+					mEventOutQueue.enqueue(event);
 					mEventOutClock.delay(0);
 				} else {
 					handleOutportMessage(event);
@@ -775,14 +804,16 @@ class rnbo_external_wrapper :
 			};
 			MaxExternalEventHandler::PresetTouchedCallback presetTouched = nullptr;
 			MaxExternalEventHandler::MidiEventCallback midiEventCallback = [this](MidiEvent midiEvent) {
-				if (mProcessing) {
-					mEventOutQueue.try_enqueue(midiEvent);
+				if (mProcessing && mIsInLive) {
+					mEventOutQueue.enqueue(midiEvent);
 					mEventOutClock.delay(0);
 				} else {
 					sendMidiEvent(midiEvent);
 				}
 			};
+
 			RNBO::ScheduleCallback scheduleCallback = nullptr;
+
 			if (mIsInLive) {
  				presetTouched = [this]() { mChangedNotifyDefer.set(); };
 				auto x = maxobj();
@@ -838,7 +869,8 @@ class rnbo_external_wrapper :
 								[this, i](const c74::min::atoms& args, const int inlet) -> c74::min::atoms {
 									double in = args[0];
 									//cout << "normal set: " << in << c74::min::endl;
-									mEventHandler->setParameterValue(i, in);
+									if (mAttributesAreSetup)
+										mEventHandler->setParameterValue(i, in);
 									return args;
 								}
 							},
@@ -861,6 +893,7 @@ class rnbo_external_wrapper :
 										switch (in.type()) {
 											case c74::min::message_type::int_argument:
 											case c74::min::message_type::float_argument:
+												if (mAttributesAreSetup)
 												{
 													double v = in;
 													mEventHandler->setParameterValue(i, v > 0.0 ? 1.0 : 0.0);
@@ -902,6 +935,7 @@ class rnbo_external_wrapper :
 										c74::min::atom in = args[0];
 										switch (in.type()) {
 											case c74::min::message_type::symbol_argument:
+												if (mAttributesAreSetup)
 												{
 													auto f = lookup.find(in);
 													if (f != lookup.end()) {
@@ -911,6 +945,7 @@ class rnbo_external_wrapper :
 												break;
 											case c74::min::message_type::int_argument:
 											case c74::min::message_type::float_argument:
+												if (mAttributesAreSetup)
 												{
 													double index = in;
 													mEventHandler->setParameterValue(i, std::max(std::min(index, static_cast<double>(info.steps - 1)), 0.0));
@@ -936,6 +971,7 @@ class rnbo_external_wrapper :
 				mAttributeLookup.emplace(i, a);
 			}
 
+			mAttributesAreSetup = true;
 			mDSPOn = false;
 
 #ifdef RNBO_WRAPPER_INC_TRANSPORT_ATTR
@@ -982,7 +1018,7 @@ class rnbo_external_wrapper :
 				}
 		};
 
-		c74::min::message<> message {
+		c74::min::message<c74::min::threadsafe::yes> message {
 			this, "message",
 			[this](const c74::min::atoms& args, const int _inlet) -> c74::min::atoms {
 				handleInportMessage(args);
@@ -990,7 +1026,7 @@ class rnbo_external_wrapper :
 			}
 		};
 
-		c74::min::message<> m_float {
+		c74::min::message<c74::min::threadsafe::yes> m_float {
 			this, "float",
 			[this](const c74::min::atoms& args, const int inlet) -> c74::min::atoms {
 				auto it = mMessageInletMap.find(inlet);
@@ -1003,7 +1039,7 @@ class rnbo_external_wrapper :
 			}
 		};
 
-		c74::min::message<> m_list {
+		c74::min::message<c74::min::threadsafe::yes> m_list {
 			this, "list",
 			[this](const c74::min::atoms& args, const int inlet) -> c74::min::atoms {
 				auto it = mMessageInletMap.find(inlet);
@@ -1017,7 +1053,7 @@ class rnbo_external_wrapper :
 			}
 		};
 
-		c74::min::message<> m_bang {
+		c74::min::message<c74::min::threadsafe::yes> m_bang {
 			this, "bang",
 			[this](const c74::min::atoms& args, const int inlet) -> c74::min::atoms {
 				auto it = mMessageInletMap.find(inlet);
@@ -1056,6 +1092,9 @@ class rnbo_external_wrapper :
 		c74::min::message<> mMaxClassSetup {
 			this, "maxclass_setup",
 			[this](const c74::min::atoms& args, const int _inlet) -> c74::min::atoms {
+				RNBO::Platform::set(&maxPlatformInstance);
+				RNBO::Logger::getInstance().setLoggerOutputCallback(LoggerOutputFunction);
+
 				c74::max::t_class * c = args[0];
 
 				c74::max::class_addmethod(c, (c74::max::method) rnbowrapper_parameter_attr_override, "parameter_attr_override", c74::max::A_CANT, 0);
@@ -1075,16 +1114,13 @@ class rnbo_external_wrapper :
 			this, "setup",
 			[this](const c74::min::atoms& args, const int _inlet) -> c74::min::atoms {
 				auto x = maxobj();
-#ifdef RNBO_WRAPPER_HAS_AUDIO
-				mDSPOn = c74::max::sys_getdspobjdspstate(x);
-#endif
 				object_parameter_init_flags((c74::max::t_object *)x, c74::max::PARAM_TYPE::PARAM_TYPE_BLOB, c74::max::PARAM_FLAGS::PARAM_FLAGS_FORCE_TYPE);
 				//make sure that the maxobj is valid when we create sync
 				mSync = std::make_unique<Sync>(this);
 				mSync->updateCache();
 				//c74::max::object_attr_setlong(x, c74::max::gensym("parameter_enable"), 1);
-				if (!mDSPOn)
-					mProcessClock.delay(0); //start the scheduler
+
+				mSetupClock.delay(0); //post init setup
 				return {};
 			}
     };
@@ -1157,14 +1193,14 @@ class rnbo_external_wrapper :
 				SampleValue** audioInputs, size_t numInputs,
 				SampleValue** audioOutputs, size_t numOutputs,
 				size_t sampleFrames) {
-			mProcessing.store(true);
+			mProcessing = true;
 			//couple the rnbotime and this object's scheduler's time
 			mRNBOObj.setCurrentTime(time);
 			if (mSync) {
 				mSync->updateTime(time, mRNBOObj);
 			}
 			mRNBOObj.process(audioInputs, numInputs, audioOutputs, numOutputs, sampleFrames, nullptr, nullptr);
-			mProcessing.store(false);
+			mProcessing = false;
 		}
 
 #ifdef RNBO_WRAPPER_HAS_AUDIO
@@ -1283,7 +1319,7 @@ class rnbo_external_wrapper :
 		std::unique_ptr<MaxExternalEventHandler> mEventHandler;
 
 		//pointer to notify, needs to be dealloced after mDataHandler
-		std::unique_ptr<c74::min::message<>> mNotify;
+		std::unique_ptr<c74::min::message<c74::min::threadsafe::yes>> mNotify;
 
 		std::vector<std::unique_ptr<c74::min::inlet<>>> mInlets;
 		std::vector<std::shared_ptr<c74::min::outlet<>>> mOutlets;
@@ -1301,7 +1337,7 @@ class rnbo_external_wrapper :
 		std::unordered_map<RNBO::Index, std::shared_ptr<c74::min::attribute_base>> mAttributeLookup;
 		std::unique_ptr<attr_transport> mTransportAttr;
 
-		std::vector<std::unique_ptr<c74::min::message<>>> mInportMessages;
+		std::vector<std::unique_ptr<c74::min::message<c74::min::threadsafe::yes>>> mInportMessages;
 
 		std::vector<std::unique_ptr<RNBO::MidiStreamParser>> mMidiProcess;
 		long mMidiProcessStart = 0;
@@ -1313,6 +1349,7 @@ class rnbo_external_wrapper :
 		bool mDSPOn = false;
 		Mutex mDSPStateMutex;
 
+		c74::min::timer<c74::min::timer_options::defer_delivery> mSetupClock;
 		c74::min::timer<c74::min::timer_options::deliver_on_scheduler> mProcessClock;
 
 		c74::min::queue<> mChangedNotifyDefer { this,
@@ -1343,13 +1380,16 @@ class rnbo_external_wrapper :
 			this, c74::min::logger::type::error
 		};
 
-		std::atomic<bool> mProcessing = false;
+		bool mProcessing = false;
 		c74::min::fifo<RNBO::EventVariant> mEventOutQueue;
 		c74::min::timer<c74::min::timer_options::deliver_on_scheduler> mEventOutClock;
 
 		std::shared_ptr<c74::min::outlet<>> mMIDIOutlet;
 		std::unique_ptr<Sync> mSync;
 		RNBO::CoreObject mRNBOObj;
+
+		//work around double trigger for parameters by not sending attribute values in at attr init
+		bool mAttributesAreSetup = false;
 };
 
 #ifndef RNBO_MAX_NO_CREATE_MIN_WRAPPER

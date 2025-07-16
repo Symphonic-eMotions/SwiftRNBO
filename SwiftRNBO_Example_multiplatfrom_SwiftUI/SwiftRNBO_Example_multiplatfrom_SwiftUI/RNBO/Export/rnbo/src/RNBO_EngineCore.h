@@ -287,6 +287,11 @@ namespace RNBO {
 			scheduleEvent(pe);
 		}
 
+		void scheduleParameterBang(ParameterIndex index, MillisecondTime offset) override {
+			ParameterBangEvent pe(index, getCurrentTime() + offset, nullptr);
+			scheduleEvent(pe);
+		}
+
 		void updatePatcherEventTarget(const EventTarget *oldTarget, PatcherEventTarget *newTarget) override {
 			RNBO_UNUSED(oldTarget)
 			RNBO_UNUSED(newTarget)

@@ -116,6 +116,11 @@ namespace RNBO {
 			// not yet sure how this would work
 		}
 
+		void scheduleParameterBang(Index index, MillisecondTime offset) override
+		{
+			// not yet sure how this would work
+		}
+
 		MillisecondTime getCurrentTime() override
 		{
 			return host_getCurrentTime(_hostHandle);

@@ -59,6 +59,7 @@ namespace RNBO {
 		virtual void notifyParameterValueChanged(ParameterIndex index, ParameterValue value, bool ignoreSource) = 0;
 		// schedule a parameter change event
 		virtual void scheduleParameterChange(ParameterIndex index, ParameterValue value, MillisecondTime offset) = 0;
+		virtual void scheduleParameterBang(ParameterIndex index, MillisecondTime offset) = 0;
 
 		virtual void updatePatcherEventTarget(const EventTarget *oldTarget, PatcherEventTarget *newTarget) = 0;
 		virtual void rescheduleEventTarget(const EventTarget *target) = 0;

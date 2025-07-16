@@ -1,30 +1,472 @@
 [
   {
-    "name": "untitled",
+    "name": "smooth",
     "preset": {
+      "Q": {
+        "value": 3
+      },
       "__sps": {
-        "filters": {}
+        "poly": [
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          }
+        ]
       },
       "cutoff": {
-        "value": 0
+        "value": 1130.4916017938012
       },
-      "freq1": {
-        "value": 220
+      "harmonics": {
+        "value": 4
       },
-      "freq2": {
-        "value": 220
+      "overblow": {
+        "value": 0.787208609749982
+      }
+    }
+  },
+  {
+    "name": "bright",
+    "preset": {
+      "Q": {
+        "value": 1.5
       },
-      "play": {
-        "value": 1
+      "__sps": {
+        "poly": [
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          }
+        ]
       },
-      "resonance": {
-        "value": 0.5
+      "cutoff": {
+        "value": 1956
       },
-      "vol1": {
-        "value": 0
+      "harmonics": {
+        "value": 3.7
       },
-      "vol2": {
-        "value": 0
+      "overblow": {
+        "value": 1.5
+      }
+    }
+  },
+  {
+    "name": "nasty",
+    "preset": {
+      "Q": {
+        "value": 3
+      },
+      "__sps": {
+        "poly": [
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          },
+          {
+            "__sps": {
+              "delay": {
+                "fb": {
+                  "value": 0.2
+                },
+                "left_delay": {
+                  "value": 300
+                },
+                "right_delay": {
+                  "value": 400
+                }
+              },
+              "envelope": {},
+              "filter": {}
+            }
+          }
+        ]
+      },
+      "cutoff": {
+        "value": 4000
+      },
+      "harmonics": {
+        "value": 4
+      },
+      "overblow": {
+        "value": 5
       }
     }
   }
