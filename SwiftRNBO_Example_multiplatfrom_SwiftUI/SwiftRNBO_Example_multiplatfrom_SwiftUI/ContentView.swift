@@ -9,16 +9,35 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var rnbo: RNBOAudioUnitHostModel
+    @EnvironmentObject var sequencer: MIDISequencer
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 10) {
             Buttons()
+
             #if !os(tvOS)
                 if rnbo.showDescription {
                     DescriptionView()
                 } else {
                     Sliders()
                     AudioKitKeyboard()
+                    
+                    HStack(spacing: 10) {
+                        Button("Laad MIDI") {
+                            sequencer.loadMIDIFile(named: "midiMelody")
+                        }
+                        Button("Genereer Willekeurig") {
+                            sequencer.generateRandomSequence()
+                        }
+                        Button("Leegmaken") {
+                            sequencer.clearAllTracks()
+                        }
+                    }
+                    
+                    HStack(spacing: 10) {
+                        Button("▶︎ Play") { sequencer.play() }
+                        Button("■ Stop") { sequencer.stop() }
+                    }
                 }
             #endif
         }

@@ -9,6 +9,13 @@ import Foundation
 
 typealias RNBOContext = RNBOAudioUnitHostModel
 
+extension RNBOAudioUnitHostModel {
+    /// Biedt de AVAudioUnit-node voor MIDI-routing
+    func getAVAudioUnitNode() -> AVAudioUnit? {
+        return audioEngine.getAVAudioUnitNode()
+    }
+}
+
 class RNBOAudioUnitHostModel: ObservableObject {
     private let audioEngine = RNBOAudioEngine()
     private let audioUnit: RNBOAudioUnit

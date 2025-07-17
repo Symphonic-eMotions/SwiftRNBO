@@ -7,6 +7,13 @@
 
 import AVFoundation
 
+extension RNBOAudioEngine {
+    /// AVAudioUnit-node van de RNBO Audio Unit
+    func getAVAudioUnitNode() -> AVAudioUnit? {
+        return avAudioUnit
+    }
+}
+
 class RNBOAudioEngine {
     private let engine = AVAudioEngine()
     private var avAudioUnit: AVAudioUnit?
