@@ -6,16 +6,15 @@
 //
 
 import AudioKit
-import Foundation
 
 /// Een sequencer die MIDI-events laadt of genereert,
 /// en deze via DispatchQueue op tijd stuurt naar de RNBOAudioUnitHostModel.
 class MIDISequencer: ObservableObject {
     private let sequencer = AppleSequencer()
-    private var noteEvents: [MIDINoteData] = []
+    @Published private(set) var noteEvents: [MIDINoteData] = []
     private var sequenceLength: TimeInterval = 0
     private var isPlaying = false
-    private var scheduledItems: [DispatchWorkItem] = []
+    private var scheduled: [DispatchWorkItem] = []
     private weak var rnbo: RNBOAudioUnitHostModel?
 
     /// Initialiseer met je RNBO-host zodat we sendNoteOn/Off kunnen aanroepen.
@@ -50,6 +49,28 @@ class MIDISequencer: ObservableObject {
             sequenceLength = sequencer.length.seconds
             print("✅ MIDI geladen: \(noteEvents.count) events, lengte \(sequenceLength)s")
         }
+    }
+    
+    /// Laadt of genereert, en prepareert events
+    func loadMIDI(named name: String) {
+        reset()
+        guard let url = Bundle.main.url(forResource: name, withExtension: "mid") else { return }
+        sequencer.loadMIDIFile(fromURL: url)
+        extractEvents()
+    }
+    
+    func generateRandom() {
+        reset()
+        guard let t = sequencer.newTrack() else { return }
+        _ = (0..<16).reduce(0.0) { pos, _ in
+            let dur = Bool.random() ? 0.25 : 0.5
+            if Bool.random() { t.add(noteNumber: .random(in: 60...72),
+                                     velocity: .random(in: 60...100),
+                                     position: Duration(beats: pos),
+                                     duration: Duration(beats: dur)) }
+            return pos + dur
+        }
+        extractEvents()
     }
 
     /// Genereer een random “vier‐beat” sequence met 8ste/16de noten en wat rusten.
@@ -90,7 +111,7 @@ class MIDISequencer: ObservableObject {
             return
         }
         isPlaying = true
-        scheduleLoop(offset: 0)
+        scheduleLoop(at: 0)
         print("▶︎ Sequencer gestart")
     }
 
@@ -98,38 +119,56 @@ class MIDISequencer: ObservableObject {
     func stop() {
         guard isPlaying else { return }
         isPlaying = false
-        for item in scheduledItems {
-            item.cancel()
-        }
-        scheduledItems.removeAll()
+        scheduled.forEach { $0.cancel() }; scheduled.removeAll()
+                noteEvents.map(\.noteNumber).forEach { rnbo?.sendNoteOff($0) }
         print("■ Sequencer gestopt")
     }
+        
+    //–– Helpers ––
+    private func reset() {
+        sequencer.tracks.forEach { $0.clear() }
+        sequencer.tracks.indices.reversed().forEach { sequencer.deleteTrack(trackIndex: $0) }
+        noteEvents = []
+        sequenceLength = 0
+        stop()
+    }
 
-    /// Recursief: plan alle note-on/off events voor één iteratie en plan de volgende loop
-    private func scheduleLoop(offset: TimeInterval) {
+    private func extractEvents() {
+        if let t = sequencer.tracks.first {
+            noteEvents = t.getMIDINoteData()
+            sequenceLength = sequencer.length.seconds
+        }
+    }
+    
+    /// Plant de Note-On en Note-Off DispatchWorkItems
+    private func schedule(_ note: UInt8,
+                          vel: UInt8,
+                          at time: TimeInterval,
+                          dur duration: TimeInterval) {
+        // Note-On
+        let onItem = DispatchWorkItem { [weak self] in
+            self?.rnbo?.sendNoteOn(note, velocity: vel)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: onItem)
+        
+        // Note-Off
+        let offItem = DispatchWorkItem { [weak self] in
+            self?.rnbo?.sendNoteOff(note)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + time + duration, execute: offItem)
+        
+        scheduled.append(contentsOf: [onItem, offItem])
+    }
+
+    private func scheduleLoop(at offset: TimeInterval) {
         guard isPlaying else { return }
-        for event in noteEvents {
-            // note-on
-            let onTime  = offset + event.position.seconds
-            let onItem  = DispatchWorkItem { [weak self] in
-                self?.rnbo?.sendNoteOn(event.noteNumber, velocity: event.velocity)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + onTime, execute: onItem)
-            scheduledItems.append(onItem)
-
-            // note-off
-            let offTime = offset + event.position.seconds + event.duration.seconds
-            let offItem = DispatchWorkItem { [weak self] in
-                self?.rnbo?.sendNoteOff(event.noteNumber)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + offTime, execute: offItem)
-            scheduledItems.append(offItem)
+        noteEvents.forEach { e in
+            schedule(e.noteNumber, vel: e.velocity, at: offset + e.position.seconds, dur: e.duration.seconds)
         }
-        // plan volgende loop‐iteratie
-        let loopItem = DispatchWorkItem { [weak self] in
-            self?.scheduleLoop(offset: offset + self!.sequenceLength)
+        let loop = DispatchWorkItem { [weak self] in
+            self?.scheduleLoop(at: offset + self!.sequenceLength)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + offset + sequenceLength, execute: loopItem)
-        scheduledItems.append(loopItem)
+        DispatchQueue.main.asyncAfter(deadline: .now() + offset + sequenceLength, execute: loop)
+        scheduled.append(loop)
     }
 }
