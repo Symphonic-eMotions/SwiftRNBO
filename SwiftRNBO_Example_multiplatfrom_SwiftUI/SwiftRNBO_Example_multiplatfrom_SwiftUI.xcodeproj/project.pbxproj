@@ -13,6 +13,7 @@
 		7C32BC832E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C32BC822E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift */; };
 		7C32BC852E2968E400DE9F8D /* midiMelody.mid in Resources */ = {isa = PBXBuildFile; fileRef = 7C32BC842E2968E400DE9F8D /* midiMelody.mid */; };
 		7C32BC8B2E30015700DE9F8D /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C32BC8A2E30015700DE9F8D /* AudioKitUI */; };
+		7C32BC8D2E3008EA00DE9F8D /* NativeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C32BC8C2E3008EA00DE9F8D /* NativeSlider.swift */; };
 		AF4B40902B061DDD00FAACBF /* RNBOEventHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF4B408E2B061DDD00FAACBF /* RNBOEventHandler.mm */; };
 		AF4B40912B061DDD00FAACBF /* RNBOList.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF4B408F2B061DDD00FAACBF /* RNBOList.mm */; };
 		AF4B40932B06326800FAACBF /* RNBOEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4B40922B06326800FAACBF /* RNBOEventHandler.swift */; };
@@ -46,6 +47,7 @@
 		7C32BC7D2E29633200DE9F8D /* MIDISequencer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDISequencer.swift; sourceTree = "<group>"; };
 		7C32BC822E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBOAudioKitMIDIRouter.swift; sourceTree = "<group>"; };
 		7C32BC842E2968E400DE9F8D /* midiMelody.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = midiMelody.mid; sourceTree = "<group>"; };
+		7C32BC8C2E3008EA00DE9F8D /* NativeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSlider.swift; sourceTree = "<group>"; };
 		AF4B408B2B061DDD00FAACBF /* RNBOEventHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RNBOEventHandler.hpp; sourceTree = "<group>"; };
 		AF4B408C2B061DDD00FAACBF /* RNBOList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBOList.h; sourceTree = "<group>"; };
 		AF4B408D2B061DDD00FAACBF /* RNBOEventHandlerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBOEventHandlerProtocol.h; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 		AFF2B41C29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				7C32BC8C2E3008EA00DE9F8D /* NativeSlider.swift */,
 				7C32BC822E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift */,
 				7C32BC7D2E29633200DE9F8D /* MIDISequencer.swift */,
 				7C32BC7B2E29631F00DE9F8D /* AudioKitMIDIManager.swift */,
@@ -771,6 +774,7 @@
 				AFF2B4F329A2095300068DD0 /* RNBO.cpp in Sources */,
 				AFF2B4EE29A2094900068DD0 /* RNBOAudioUnit.mm in Sources */,
 				AFF2B4EC29A2094600068DD0 /* RNBOParameter.swift in Sources */,
+				7C32BC8D2E3008EA00DE9F8D /* NativeSlider.swift in Sources */,
 				AF4B40912B061DDD00FAACBF /* RNBOList.mm in Sources */,
 				AFFCBE422B09019A00800A23 /* RNBODescription.swift in Sources */,
 				AFF2B42029A2090200068DD0 /* ContentView.swift in Sources */,

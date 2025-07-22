@@ -13,33 +13,29 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            Buttons()
-
-            #if !os(tvOS)
-                if rnbo.showDescription {
-                    DescriptionView()
-                } else {
-                    Sliders()
-                    AudioKitKeyboard()
-                    
-                    HStack(spacing: 10) {
-                        Button("Laad MIDI") {
-                            sequencer.loadMIDIFile(named: "midiMelody")
-                        }
-                        Button("Genereer Willekeurig") {
-                            sequencer.generateRandomSequence()
-                        }
-                        Button("Leegmaken") {
-                            sequencer.clearAllTracks()
-                        }
+            if rnbo.showDescription {
+                DescriptionView()
+            } else {
+                Sliders()
+                AudioKitKeyboard()
+                
+                HStack(spacing: 10) {
+                    Button("Laad MIDI") {
+                        sequencer.loadMIDIFile(named: "midiMelody")
                     }
-                    
-                    HStack(spacing: 10) {
-                        Button("▶︎ Play") { sequencer.play() }
-                        Button("■ Stop") { sequencer.stop() }
+                    Button("Genereer Willekeurig") {
+                        sequencer.generateRandomSequence()
+                    }
+                    Button("Leegmaken") {
+                        sequencer.clearAllTracks()
                     }
                 }
-            #endif
+                
+                HStack(spacing: 10) {
+                    Button("▶︎ Play") { sequencer.play() }
+                    Button("■ Stop") { sequencer.stop() }
+                }
+            }
         }
         .padding()
     }
