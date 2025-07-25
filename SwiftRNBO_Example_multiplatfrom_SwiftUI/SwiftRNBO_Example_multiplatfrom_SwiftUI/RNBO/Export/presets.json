@@ -1,472 +1,143 @@
 [
   {
-    "name": "smooth",
+    "name": "untitled",
     "preset": {
-      "Q": {
-        "value": 3
-      },
       "__sps": {
         "poly": [
           {
             "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
                 },
-                "left_delay": {
+                "decay": {
+                  "value": 200
+                },
+                "release": {
                   "value": 300
                 },
-                "right_delay": {
-                  "value": 400
+                "sustain": {
+                  "value": 0.9
                 }
               },
-              "envelope": {},
-              "filter": {}
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
             }
           },
           {
             "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
                 },
-                "left_delay": {
+                "decay": {
+                  "value": 200
+                },
+                "release": {
                   "value": 300
                 },
-                "right_delay": {
-                  "value": 400
+                "sustain": {
+                  "value": 0.9
                 }
               },
-              "envelope": {},
-              "filter": {}
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
             }
           },
           {
             "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
                 },
-                "left_delay": {
+                "decay": {
+                  "value": 200
+                },
+                "release": {
                   "value": 300
                 },
-                "right_delay": {
-                  "value": 400
+                "sustain": {
+                  "value": 0.9
                 }
               },
-              "envelope": {},
-              "filter": {}
+              "p_obj-3": {
+                "fb": {
+                  "value": 0.5
+                },
+                "left_delay": {
+                  "value": 200
+                },
+                "right_delay": {
+                  "value": 275
+                }
+              }
             }
           },
           {
             "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
+              "filter.lp": {},
+              "osc.fm": {},
+              "p_obj-18": {
+                "attack": {
+                  "value": 120
                 },
-                "left_delay": {
+                "decay": {
+                  "value": 200
+                },
+                "release": {
                   "value": 300
                 },
-                "right_delay": {
-                  "value": 400
+                "sustain": {
+                  "value": 0.9
                 }
               },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
+              "p_obj-3": {
                 "fb": {
-                  "value": 0.2
+                  "value": 0.5
                 },
                 "left_delay": {
-                  "value": 300
+                  "value": 200
                 },
                 "right_delay": {
-                  "value": 400
+                  "value": 275
                 }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
+              }
             }
           }
         ]
       },
-      "cutoff": {
-        "value": 1130.4916017938012
+      "filter": {
+        "value": 12000
       },
-      "harmonics": {
-        "value": 4
+      "harmonicity": {
+        "value": 1
       },
-      "overblow": {
-        "value": 0.787208609749982
-      }
-    }
-  },
-  {
-    "name": "bright",
-    "preset": {
-      "Q": {
-        "value": 1.5
-      },
-      "__sps": {
-        "poly": [
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          }
-        ]
-      },
-      "cutoff": {
-        "value": 1956
-      },
-      "harmonics": {
-        "value": 3.7
-      },
-      "overblow": {
-        "value": 1.5
-      }
-    }
-  },
-  {
-    "name": "nasty",
-    "preset": {
-      "Q": {
-        "value": 3
-      },
-      "__sps": {
-        "poly": [
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          },
-          {
-            "__sps": {
-              "delay": {
-                "fb": {
-                  "value": 0.2
-                },
-                "left_delay": {
-                  "value": 300
-                },
-                "right_delay": {
-                  "value": 400
-                }
-              },
-              "envelope": {},
-              "filter": {}
-            }
-          }
-        ]
-      },
-      "cutoff": {
-        "value": 4000
-      },
-      "harmonics": {
-        "value": 4
-      },
-      "overblow": {
-        "value": 5
+      "mod_index": {
+        "value": 1
       }
     }
   }
