@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -726,7 +726,6 @@
 			mainGroup = AFF2B41129A2090200068DD0;
 			packageReferences = (
 				AF4B40992B06C4B100FAACBF /* XCRemoteSwiftPackageReference "Keyboard" */,
-				7C32BC7F2E29636400DE9F8D /* XCLocalSwiftPackageReference "../../AudioKit/AudioKit" */,
 				7C32BC892E30015700DE9F8D /* XCRemoteSwiftPackageReference "AudioKitUI" */,
 			);
 			productRefGroup = AFF2B41B29A2090200068DD0 /* Products */;
@@ -1022,13 +1021,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		7C32BC7F2E29636400DE9F8D /* XCLocalSwiftPackageReference "../../AudioKit/AudioKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../AudioKit/AudioKit;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		7C32BC892E30015700DE9F8D /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
