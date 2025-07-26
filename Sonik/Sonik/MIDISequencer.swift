@@ -39,7 +39,6 @@ class MIDISequencer: ObservableObject {
                 break
             }
         }
-
         sequencer.enableLooping()
     }
 
@@ -68,17 +67,19 @@ class MIDISequencer: ObservableObject {
         if let track = sequencer.tracks.first {
             noteEvents = track.getMIDINoteData()
             sequenceLength = sequencer.length.seconds
+            track.setMIDIOutput(callbackInstrument.midiIn)
+            sequencer.setLength(sequencer.length)
             print("✅ MIDI geladen: \(noteEvents.count) events, lengte \(sequenceLength)s")
         }
-    }
+            }
     
-    /// Laadt of genereert, en prepareert events
-    func loadMIDI(named name: String) {
-        reset()
-        guard let url = Bundle.main.url(forResource: name, withExtension: "mid") else { return }
-        sequencer.loadMIDIFile(fromURL: url)
-        extractEvents()
-    }
+//    /// Laadt of genereert, en prepareert events
+//    func loadMIDI(named name: String) {
+//        reset()
+//        guard let url = Bundle.main.url(forResource: name, withExtension: "mid") else { return }
+//        sequencer.loadMIDIFile(fromURL: url)
+//        extractEvents()
+//    }
     
     // Nieuwe methode voor Arpeggio-generatie
     func generateArpeggioSequence(
