@@ -11,15 +11,36 @@ import AudioKit
 /// en deze via DispatchQueue op tijd stuurt naar de RNBOAudioUnitHostModel.
 class MIDISequencer: ObservableObject {
     private let sequencer = AppleSequencer()
+    private let callbackInstrument: MIDICallbackInstrument
     @Published private(set) var noteEvents: [MIDINoteData] = []
     private var sequenceLength: TimeInterval = 0
     private var isPlaying = false
-    private var scheduled: [DispatchWorkItem] = []
     private weak var rnbo: RNBOAudioUnitHostModel?
 
-    /// Initialiseer met je RNBO-host zodat we sendNoteOn/Off kunnen aanroepen.
     init(rnbo: RNBOAudioUnitHostModel) {
         self.rnbo = rnbo
+
+        callbackInstrument = MIDICallbackInstrument { [weak rnbo] status, noteNumber, velocity in
+            guard let rnbo = rnbo else { return }
+
+            let command = status & 0xF0
+            let channel = status & 0x0F
+
+            switch command {
+            case 0x90 where velocity > 0:
+                rnbo.audioUnit.sendNoteOnMessage(withPitch: noteNumber,
+                                                          velocity: velocity,
+                                                          channel: UInt8(channel))
+            case 0x80, 0x90:
+                rnbo.audioUnit.sendNoteOffMessage(withPitch: noteNumber,
+                                                           releaseVelocity: 0,
+                                                           channel: UInt8(channel))
+            default:
+                break
+            }
+        }
+
+        sequencer.enableLooping()
     }
 
     /// Ruim alle tracks en geplande events op.
@@ -74,6 +95,7 @@ class MIDISequencer: ObservableObject {
             print("❌ Kan geen nieuwe track maken.")
             return
         }
+        track.setMIDIOutput(callbackInstrument.midiIn)
         
         // 16e noot grid definitie
         let gridResolution = 0.25
@@ -105,21 +127,22 @@ class MIDISequencer: ObservableObject {
 
     /// Start de playback-loop
     func play() {
-        guard !isPlaying, noteEvents.count > 0 else {
-            if noteEvents.isEmpty { print("⚠️ Laad eerst een sequence of genereer er een.") }
-            return
-        }
+        guard !isPlaying else { return }
         isPlaying = true
-        scheduleLoop(at: 0)
+        sequencer.rewind()
+        sequencer.play()
         print("▶︎ Sequencer gestart")
     }
+
 
     /// Stop playback en breek geplande DispatchWorkItems af
     func stop() {
         guard isPlaying else { return }
         isPlaying = false
-        scheduled.forEach { $0.cancel() }; scheduled.removeAll()
-                noteEvents.map(\.noteNumber).forEach { rnbo?.sendNoteOff($0) }
+        sequencer.stop()
+        noteEvents.map(\.noteNumber).forEach {
+            rnbo?.audioUnit.sendNoteOffMessage(withPitch: $0, releaseVelocity: 0, channel: 0)
+        }
         print("■ Sequencer gestopt")
     }
         
@@ -137,37 +160,5 @@ class MIDISequencer: ObservableObject {
             noteEvents = t.getMIDINoteData()
             sequenceLength = sequencer.length.seconds
         }
-    }
-    
-    /// Plant de Note-On en Note-Off DispatchWorkItems
-    private func schedule(_ note: UInt8,
-                          vel: UInt8,
-                          at time: TimeInterval,
-                          dur duration: TimeInterval) {
-        // Note-On
-        let onItem = DispatchWorkItem { [weak self] in
-            self?.rnbo?.sendNoteOn(note, velocity: vel)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: onItem)
-        
-        // Note-Off
-        let offItem = DispatchWorkItem { [weak self] in
-            self?.rnbo?.sendNoteOff(note)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + time + duration, execute: offItem)
-        
-        scheduled.append(contentsOf: [onItem, offItem])
-    }
-
-    private func scheduleLoop(at offset: TimeInterval) {
-        guard isPlaying else { return }
-        noteEvents.forEach { e in
-            schedule(e.noteNumber, vel: e.velocity, at: offset + e.position.seconds, dur: e.duration.seconds)
-        }
-        let loop = DispatchWorkItem { [weak self] in
-            self?.scheduleLoop(at: offset + self!.sequenceLength)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + offset + sequenceLength, execute: loop)
-        scheduled.append(loop)
     }
 }

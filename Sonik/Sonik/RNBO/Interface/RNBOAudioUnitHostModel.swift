@@ -17,12 +17,18 @@ extension RNBOAudioUnitHostModel {
 }
 
 class RNBOAudioUnitHostModel: ObservableObject {
+    
     private let audioEngine = RNBOAudioEngine()
-    private let audioUnit: RNBOAudioUnit
+    private var _audioUnit: RNBOAudioUnit!
+    public var audioUnit: RNBOAudioUnit {
+        _audioUnit
+    }
     private let eventHandler = RNBOEventHandler()
     @Published var parameters: [RNBOParameter]
     @Published var showDescription: Bool = false
     let description: RNBODescription?
+    
+    
 
     init() {
         do {
@@ -34,7 +40,7 @@ class RNBOAudioUnitHostModel: ObservableObject {
             description = nil
         }
 
-        audioUnit = audioEngine.getAudioUnit()
+        _audioUnit = audioEngine.getAudioUnit()
         parameters = description?.getParametersArray() ?? []
     }
 

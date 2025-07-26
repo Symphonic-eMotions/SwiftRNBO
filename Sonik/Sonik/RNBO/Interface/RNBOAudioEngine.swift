@@ -22,7 +22,11 @@ class RNBOAudioEngine {
     private let distortionEffect: AVAudioUnitDistortion
     private let inputMixer: AVAudioMixerNode
     private let microphoneVolumeMixer: AVAudioMixerNode
-
+    
+    public var audioUnit: RNBOAudioUnit {
+        avAudioUnit!.auAudioUnit as! RNBOAudioUnit
+    }
+    
     private func initInput() {
         let input = engine.inputNode
         // let format = input.inputFormat(forBus: 0)
