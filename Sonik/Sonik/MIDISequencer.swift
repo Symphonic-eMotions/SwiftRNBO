@@ -71,16 +71,8 @@ class MIDISequencer: ObservableObject {
             sequencer.setLength(sequencer.length)
             print("✅ MIDI geladen: \(noteEvents.count) events, lengte \(sequenceLength)s")
         }
-            }
-    
-//    /// Laadt of genereert, en prepareert events
-//    func loadMIDI(named name: String) {
-//        reset()
-//        guard let url = Bundle.main.url(forResource: name, withExtension: "mid") else { return }
-//        sequencer.loadMIDIFile(fromURL: url)
-//        extractEvents()
-//    }
-    
+    }
+
     // Nieuwe methode voor Arpeggio-generatie
     func generateArpeggioSequence(
         chordNotes: [MIDINoteNumber] = [60, 64, 67],
