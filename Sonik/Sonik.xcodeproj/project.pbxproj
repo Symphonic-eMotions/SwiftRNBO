@@ -21,7 +21,7 @@
 		AF865DE82B0A381B0019FB28 /* MIDIHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF865DE72B0A381B0019FB28 /* MIDIHelpers.swift */; };
 		AFEBC8E22B079BD80097D64B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEBC8E12B079BD80097D64B /* Buttons.swift */; };
 		AFEBC8E42B079C150097D64B /* AudioKitKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEBC8E32B079C150097D64B /* AudioKitKeyboard.swift */; };
-		AFF2B41E29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF2B41D29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUIApp.swift */; };
+		AFF2B41E29A2090200068DD0 /* Sonik.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF2B41D29A2090200068DD0 /* Sonik.swift */; };
 		AFF2B42029A2090200068DD0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF2B41F29A2090200068DD0 /* ContentView.swift */; };
 		AFF2B42229A2090300068DD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFF2B42129A2090300068DD0 /* Assets.xcassets */; };
 		AFF2B42629A2090300068DD0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFF2B42529A2090300068DD0 /* Preview Assets.xcassets */; };
@@ -55,14 +55,14 @@
 		AF4B408F2B061DDD00FAACBF /* RNBOList.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNBOList.mm; sourceTree = "<group>"; };
 		AF4B40922B06326800FAACBF /* RNBOEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBOEventHandler.swift; sourceTree = "<group>"; };
 		AF865DE72B0A381B0019FB28 /* MIDIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIHelpers.swift; sourceTree = "<group>"; };
-		AFA214B62B20D01000BCD4E6 /* SwiftRNBO-Example-multiplatfrom-SwiftUI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "SwiftRNBO-Example-multiplatfrom-SwiftUI-Info.plist"; sourceTree = SOURCE_ROOT; };
+		AFA214B62B20D01000BCD4E6 /* Sonik-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sonik-info.plist"; sourceTree = SOURCE_ROOT; };
 		AFEBC8E12B079BD80097D64B /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		AFEBC8E32B079C150097D64B /* AudioKitKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioKitKeyboard.swift; sourceTree = "<group>"; };
-		AFF2B41A29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftRNBO_Example_multiplatfrom_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFF2B41D29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftRNBO_Example_multiplatfrom_SwiftUIApp.swift; sourceTree = "<group>"; };
+		AFF2B41A29A2090200068DD0 /* Sonik.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sonik.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFF2B41D29A2090200068DD0 /* Sonik.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sonik.swift; sourceTree = "<group>"; };
 		AFF2B41F29A2090200068DD0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AFF2B42129A2090300068DD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AFF2B42329A2090300068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftRNBO_Example_multiplatfrom_SwiftUI.entitlements; sourceTree = "<group>"; };
+		AFF2B42329A2090300068DD0 /* Sonik.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sonik.entitlements; sourceTree = "<group>"; };
 		AFF2B42529A2090300068DD0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AFF2B43029A2093F00068DD0 /* RNBOParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBOParameter.swift; sourceTree = "<group>"; };
 		AFF2B43129A2093F00068DD0 /* RNBOAudioUnitHostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBOAudioUnitHostModel.swift; sourceTree = "<group>"; };
@@ -251,7 +251,7 @@
 		AFF2B41129A2090200068DD0 = {
 			isa = PBXGroup;
 			children = (
-				AFF2B41C29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI */,
+				AFF2B41C29A2090200068DD0 /* Sonik */,
 				AFF2B41B29A2090200068DD0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -259,21 +259,21 @@
 		AFF2B41B29A2090200068DD0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AFF2B41A29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI.app */,
+				AFF2B41A29A2090200068DD0 /* Sonik.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AFF2B41C29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI */ = {
+		AFF2B41C29A2090200068DD0 /* Sonik */ = {
 			isa = PBXGroup;
 			children = (
 				7C32BC8C2E3008EA00DE9F8D /* NativeSlider.swift */,
 				7C32BC822E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift */,
 				7C32BC7D2E29633200DE9F8D /* MIDISequencer.swift */,
 				7C32BC7B2E29631F00DE9F8D /* AudioKitMIDIManager.swift */,
-				AFA214B62B20D01000BCD4E6 /* SwiftRNBO-Example-multiplatfrom-SwiftUI-Info.plist */,
+				AFA214B62B20D01000BCD4E6 /* Sonik-info.plist */,
 				AFF2B42E29A2093F00068DD0 /* RNBO */,
-				AFF2B41D29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUIApp.swift */,
+				AFF2B41D29A2090200068DD0 /* Sonik.swift */,
 				AFF2B41F29A2090200068DD0 /* ContentView.swift */,
 				AFFCBE432B09079000800A23 /* DescriptionView.swift */,
 				AFF2B4F729A20A3500068DD0 /* Sliders.swift */,
@@ -281,11 +281,11 @@
 				AFEBC8E12B079BD80097D64B /* Buttons.swift */,
 				AFEBC8E32B079C150097D64B /* AudioKitKeyboard.swift */,
 				AFF2B42129A2090300068DD0 /* Assets.xcassets */,
-				AFF2B42329A2090300068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI.entitlements */,
+				AFF2B42329A2090300068DD0 /* Sonik.entitlements */,
 				AFF2B42429A2090300068DD0 /* Preview Content */,
 				7C32BC842E2968E400DE9F8D /* midiMelody.mid */,
 			);
-			path = SwiftRNBO_Example_multiplatfrom_SwiftUI;
+			path = Sonik;
 			sourceTree = "<group>";
 		};
 		AFF2B42429A2090300068DD0 /* Preview Content */ = {
@@ -678,9 +678,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AFF2B41929A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI */ = {
+		AFF2B41929A2090200068DD0 /* Sonik */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AFF2B42929A2090300068DD0 /* Build configuration list for PBXNativeTarget "SwiftRNBO_Example_multiplatfrom_SwiftUI" */;
+			buildConfigurationList = AFF2B42929A2090300068DD0 /* Build configuration list for PBXNativeTarget "Sonik" */;
 			buildPhases = (
 				AFF2B41629A2090200068DD0 /* Sources */,
 				AFF2B41729A2090200068DD0 /* Frameworks */,
@@ -690,14 +690,14 @@
 			);
 			dependencies = (
 			);
-			name = SwiftRNBO_Example_multiplatfrom_SwiftUI;
+			name = Sonik;
 			packageProductDependencies = (
 				AF4B409A2B06C4B100FAACBF /* Keyboard */,
 				7C32BC802E29636400DE9F8D /* AudioKit */,
 				7C32BC8A2E30015700DE9F8D /* AudioKitUI */,
 			);
 			productName = SwiftRNBO_Example_multiplatfrom_SwiftUI;
-			productReference = AFF2B41A29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI.app */;
+			productReference = AFF2B41A29A2090200068DD0 /* Sonik.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -715,7 +715,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AFF2B41529A2090200068DD0 /* Build configuration list for PBXProject "SwiftRNBO_Example_multiplatfrom_SwiftUI" */;
+			buildConfigurationList = AFF2B41529A2090200068DD0 /* Build configuration list for PBXProject "Sonik" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -732,7 +732,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AFF2B41929A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUI */,
+				AFF2B41929A2090200068DD0 /* Sonik */,
 			);
 		};
 /* End PBXProject section */
@@ -779,7 +779,7 @@
 				AFF2B42029A2090200068DD0 /* ContentView.swift in Sources */,
 				AFF2B4EB29A2094600068DD0 /* RNBOAudioEngine.swift in Sources */,
 				7C32BC832E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift in Sources */,
-				AFF2B41E29A2090200068DD0 /* SwiftRNBO_Example_multiplatfrom_SwiftUIApp.swift in Sources */,
+				AFF2B41E29A2090200068DD0 /* Sonik.swift in Sources */,
 				AFFCBE442B09079000800A23 /* DescriptionView.swift in Sources */,
 				7C32BC7C2E29631F00DE9F8D /* AudioKitMIDIManager.swift in Sources */,
 			);
@@ -910,17 +910,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftRNBO_Example_multiplatfrom_SwiftUI/SwiftRNBO_Example_multiplatfrom_SwiftUI.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Sonik/Sonik.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftRNBO_Example_multiplatfrom_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Sonik/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "${PRODUCT_NAME}/RNBO/export/**";
-				INFOPLIST_FILE = "SwiftRNBO-Example-multiplatfrom-SwiftUI-Info.plist";
+				INFOPLIST_FILE = "Sonik-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses microphone.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -938,7 +938,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "nl.symphonic-emotions.rnbo.feedback-synth";
+				PRODUCT_BUNDLE_IDENTIFIER = "nl.symphonic-emotions.rnbo.sonik";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -957,17 +957,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftRNBO_Example_multiplatfrom_SwiftUI/SwiftRNBO_Example_multiplatfrom_SwiftUI.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Sonik/Sonik.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftRNBO_Example_multiplatfrom_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Sonik/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "${PRODUCT_NAME}/RNBO/export/**";
-				INFOPLIST_FILE = "SwiftRNBO-Example-multiplatfrom-SwiftUI-Info.plist";
+				INFOPLIST_FILE = "Sonik-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses microphone.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -985,7 +985,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "nl.symphonic-emotions.rnbo.feedback-synth";
+				PRODUCT_BUNDLE_IDENTIFIER = "nl.symphonic-emotions.rnbo.sonik";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1002,7 +1002,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AFF2B41529A2090200068DD0 /* Build configuration list for PBXProject "SwiftRNBO_Example_multiplatfrom_SwiftUI" */ = {
+		AFF2B41529A2090200068DD0 /* Build configuration list for PBXProject "Sonik" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AFF2B42729A2090300068DD0 /* Debug */,
@@ -1011,7 +1011,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AFF2B42929A2090300068DD0 /* Build configuration list for PBXNativeTarget "SwiftRNBO_Example_multiplatfrom_SwiftUI" */ = {
+		AFF2B42929A2090300068DD0 /* Build configuration list for PBXNativeTarget "Sonik" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AFF2B42A29A2090300068DD0 /* Debug */,

@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct SwiftRNBO_Example_multiplatfrom_SwiftUIApp: App {
+struct Sonik: App {
     @ObservedObject var rnbo = RNBOAudioUnitHostModel()
     @StateObject  var sequencer: MIDISequencer
 
