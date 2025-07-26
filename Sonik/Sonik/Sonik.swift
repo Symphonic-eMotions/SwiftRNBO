@@ -13,7 +13,6 @@ struct Sonik: App {
     @StateObject  var sequencer: MIDISequencer
 
     init() {
-        // Zorg dat RNBOAudioUnitHostModel al klaar is
         let hostModel = RNBOAudioUnitHostModel()
         _rnbo = ObservedObject(wrappedValue: hostModel)
         _sequencer = StateObject(wrappedValue: MIDISequencer(rnbo: hostModel))

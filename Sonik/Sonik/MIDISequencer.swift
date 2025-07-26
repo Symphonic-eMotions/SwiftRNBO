@@ -59,49 +59,48 @@ class MIDISequencer: ObservableObject {
         extractEvents()
     }
     
-    func generateRandom() {
-        reset()
-        guard let t = sequencer.newTrack() else { return }
-        _ = (0..<16).reduce(0.0) { pos, _ in
-            let dur = Bool.random() ? 0.25 : 0.5
-            if Bool.random() { t.add(noteNumber: .random(in: 60...72),
-                                     velocity: .random(in: 60...100),
-                                     position: Duration(beats: pos),
-                                     duration: Duration(beats: dur)) }
-            return pos + dur
-        }
-        extractEvents()
-    }
-
-    /// Genereer een random “vier‐beat” sequence met 8ste/16de noten en wat rusten.
-    func generateRandomSequence() {
+    // Nieuwe methode voor Arpeggio-generatie
+    func generateArpeggioSequence(
+        chordNotes: [MIDINoteNumber] = [60, 64, 67],
+        pattern: [Int] = [0, 1, 2, 1],
+        octaveRange: Int = 1,
+        repeats: Int = 4,
+        noteDuration: Duration = Duration(beats: 0.25),
+        velocity: MIDIVelocity = 100
+    ) {
         clearAllTracks()
+        
         guard let track = sequencer.newTrack() else {
             print("❌ Kan geen nieuwe track maken.")
             return
         }
-        track.clear()
-        // Bouw 4 beats op
-        let totalBeats = 4.0
-        var posBeats = 0.0
-        while posBeats < totalBeats {
-            let isRest = Bool.random() && Bool.random()   // ca. 25% rust
-            let dur = Bool.random() ? 0.25 : 0.5          // 16e of 8e
-            if !isRest {
-                let note = MIDINoteNumber(Int.random(in: 60...72))
-                let vel  = MIDIVelocity(Int.random(in: 60...100))
-                track.add(noteNumber: note,
-                          velocity: vel,
-                          position: Duration(beats: posBeats),
-                          duration: Duration(beats: dur))
+        
+        // 16e noot grid definitie
+        let gridResolution = 0.25
+        var currentBeat = 0.0
+        
+        for _ in 0..<repeats {
+            for octave in 0..<octaveRange {
+                for index in pattern {
+                    let midiNote = chordNotes[index % chordNotes.count] + MIDINoteNumber(octave * 12)
+                    // Zorg dat elke noot exact op het 16e-grid geplaatst wordt
+                    let quantizedBeat = (currentBeat / gridResolution).rounded() * gridResolution
+                    track.add(noteNumber: midiNote,
+                              velocity: velocity,
+                              position: Duration(beats: quantizedBeat),
+                              duration: noteDuration)
+                    currentBeat += gridResolution
+                }
             }
-            posBeats += dur
         }
-        // Haal de gegenereerde events op
+        
+        // Sequence-length precies op maat zetten
+        sequencer.setLength(Duration(beats: currentBeat))
+        
         noteEvents = track.getMIDINoteData()
-        sequenceLength = totalBeats * (60.0 / sequencer.tempo)
-
-        print("🎲 Willekeurige sequence: \(noteEvents.count) events")
+        sequenceLength = currentBeat * (60.0 / sequencer.tempo)
+        
+        print("🎶 Strakke arpeggio sequence: \(noteEvents.count) events")
     }
 
     /// Start de playback-loop

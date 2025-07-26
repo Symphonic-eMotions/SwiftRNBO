@@ -12,31 +12,55 @@ struct ContentView: View {
     @EnvironmentObject var sequencer: MIDISequencer
 
     var body: some View {
-        VStack(spacing: 10) {
-            if rnbo.showDescription {
-                DescriptionView()
-            } else {
-                Sliders()
-                AudioKitKeyboard()
-                
-                HStack(spacing: 10) {
-                    Button("Laad MIDI") {
-                        sequencer.loadMIDIFile(named: "midiMelody")
+            VStack(spacing: 10) {
+                if rnbo.showDescription {
+                    DescriptionView()
+                } else {
+                    Sliders()
+                    AudioKitKeyboard()
+
+                    HStack(spacing: 15) {
+                        Button {
+                            sequencer.loadMIDIFile(named: "midiMelody2")
+                        } label: {
+                            Label("", systemImage: "folder.fill")
+                        }
+
+                        Button {
+                            sequencer.generateArpeggioSequence(
+                                chordNotes: [60, 64, 67],
+                                pattern: [0, 1, 2, 1],
+                                octaveRange: 2,
+                                repeats: 4
+                            )
+                        } label: {
+                            Label("", systemImage: "music.note.list")
+                        }
+
+                        Button {
+                            sequencer.clearAllTracks()
+                        } label: {
+                            Label("", systemImage: "trash.fill")
+                        }
                     }
-                    Button("Genereer Willekeurig") {
-                        sequencer.generateRandomSequence()
+                    .buttonStyle(.borderedProminent)
+
+                    HStack(spacing: 15) {
+                        Button {
+                            sequencer.play()
+                        } label: {
+                            Label("Play", systemImage: "play.circle.fill")
+                        }
+                        
+                        Button {
+                            sequencer.stop()
+                        } label: {
+                            Label("Stop", systemImage: "stop.circle.fill")
+                        }
                     }
-                    Button("Leegmaken") {
-                        sequencer.clearAllTracks()
-                    }
-                }
-                
-                HStack(spacing: 10) {
-                    Button("▶︎ Play") { sequencer.play() }
-                    Button("■ Stop") { sequencer.stop() }
+                    .buttonStyle(.bordered)
                 }
             }
+            .padding()
         }
-        .padding()
-    }
 }
