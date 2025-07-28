@@ -14,7 +14,10 @@ struct Sliders: View {
         ScrollView {
             VStack {
                 ForEach($rnbo.parameters) { $parameter in
-                    SliderView(parameter: $parameter)
+                    if let config = rnbo.parameterConfigs.first(where: { $0.id == parameter.id }),
+                       config.visible {
+                        SliderView(parameter: $parameter, displayName: config.displayName)
+                    }
                 }
             }
             .padding()

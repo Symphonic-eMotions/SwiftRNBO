@@ -7,12 +7,66 @@
 
 import Foundation
 
+struct ParameterConfig: Codable {
+    let id: String
+    var displayName: String
+    var visible: Bool
+}
+
 typealias RNBOContext = RNBOAudioUnitHostModel
 
 extension RNBOAudioUnitHostModel {
     /// Biedt de AVAudioUnit-node voor MIDI-routing
     func getAVAudioUnitNode() -> AVAudioUnit? {
         return audioEngine.getAVAudioUnitNode()
+    }
+}
+
+extension RNBOAudioUnitHostModel {
+    
+    private var configFileName: String { "parameterConfig" }
+    
+    static func loadParameterConfiguration(
+        from parameters: [RNBOParameter],
+        configFileName: String = "parameterConfig"
+    ) -> [ParameterConfig] {
+        guard let configURL = Bundle.main.url(forResource: configFileName, withExtension: "json") else {
+            printExampleParameterConfig(parameters: parameters)
+            return parameters.map {
+                ParameterConfig(id: $0.id, displayName: $0.info.name, visible: true)
+            }
+        }
+
+        do {
+            let data = try Data(contentsOf: configURL)
+            let loadedConfigs = try JSONDecoder().decode([ParameterConfig].self, from: data)
+            return loadedConfigs
+        } catch {
+            print("Error loading parameter config: \(error)")
+            printExampleParameterConfig(parameters: parameters)
+            return parameters.map {
+                ParameterConfig(id: $0.id, displayName: $0.info.name, visible: true)
+            }
+        }
+    }
+
+    static func printExampleParameterConfig(parameters: [RNBOParameter]) {
+        let exampleConfig = parameters.map {
+            ParameterConfig(id: $0.id, displayName: $0.info.name, visible: true)
+        }
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            let jsonData = try encoder.encode(exampleConfig)
+            let jsonString = String(data: jsonData, encoding: .utf8)!
+            print("""
+            === Example parameterConfig.json ===
+            \(jsonString)
+            ====================================
+            """)
+        } catch {
+            print("Failed to encode example config: \(error)")
+        }
     }
 }
 
@@ -25,11 +79,12 @@ class RNBOAudioUnitHostModel: ObservableObject {
     }
     private let eventHandler = RNBOEventHandler()
     @Published var parameters: [RNBOParameter]
+    @Published var parameterConfigs: [ParameterConfig]
     @Published var showDescription: Bool = false
     let description: RNBODescription?
     
     
-
+    
     init() {
         do {
             let url = Bundle.main.url(forResource: "description", withExtension: "json")!
@@ -39,9 +94,11 @@ class RNBOAudioUnitHostModel: ObservableObject {
             print("Error decoding JSON from URL: \(error)")
             description = nil
         }
-
+        
         _audioUnit = audioEngine.getAudioUnit()
-        parameters = description?.getParametersArray() ?? []
+        let localParameters = description?.getParametersArray() ?? []
+        self.parameters = localParameters
+        self.parameterConfigs = Self.loadParameterConfiguration(from: localParameters)
     }
 
     func playAudioFile() {

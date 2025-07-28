@@ -10,11 +10,12 @@ import SwiftUI
 struct SliderView: View {
     @EnvironmentObject var rnbo: RNBOAudioUnitHostModel
     @Binding var parameter: RNBOParameter
+    var displayName: String
 
     var body: some View {
         HStack {
             // 1) Parameter-naam
-            Text(parameter.info.paramId)
+            Text(displayName)
                 .frame(width: 80, alignment: .leading)
                 .font(.caption)
 
