@@ -51,14 +51,31 @@ class RNBOAudioEngine {
         inputMixer = AVAudioMixerNode()
         microphoneVolumeMixer = AVAudioMixerNode()
 
-        #if os(iOS)
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
-                try AVAudioSession.sharedInstance().setActive(true)
-            } catch {
-                print("Audio session error: \(error.localizedDescription)")
-            }
-        #endif
+        do {
+            let audioSession = AVAudioSession.sharedInstance()
+            
+            // KRITIEKE FIX: Forceer dezelfde buffer duration op beide devices
+            // Dit elimineert het hoofdprobleem
+            let targetBufferDuration = 0.010 // 10ms zoals iPad
+            try audioSession.setPreferredIOBufferDuration(targetBufferDuration)
+            
+            // KRITIEKE FIX: Probeer audio session sample rate op 48kHz te forceren
+            // Dit voorkomt sample rate conversion
+            try audioSession.setPreferredSampleRate(48000) // Match system sample rate
+            try audioSession.setPreferredIOBufferDuration(0.010)
+            try audioSession.setActive(true)
+            
+            try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
+            
+            // Log actual values voor debugging
+            print("Actual sample rate: \(audioSession.sampleRate)")
+            print("Actual buffer duration: \(audioSession.ioBufferDuration)")
+            print("Actual input channels: \(audioSession.inputNumberOfChannels)")
+            print("Actual output channels: \(audioSession.outputNumberOfChannels)")
+            
+        } catch {
+            print("Audio session error: \(error.localizedDescription)")
+        }
 
         distortionEffect = AVAudioUnitDistortion()
         distortionEffect.loadFactoryPreset(.multiEcho1)
