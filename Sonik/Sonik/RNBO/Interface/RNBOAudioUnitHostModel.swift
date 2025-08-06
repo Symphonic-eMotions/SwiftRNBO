@@ -81,6 +81,9 @@ class RNBOAudioUnitHostModel: ObservableObject {
     @Published var parameters: [RNBOParameter]
     @Published var parameterConfigs: [ParameterConfig]
     @Published var showDescription: Bool = false
+    @Published var currentOctave: Int = 0
+    @Published private(set) var activeMIDINotes: Set<UInt8> = []
+
     let description: RNBODescription?
     
     
@@ -144,11 +147,22 @@ class RNBOAudioUnitHostModel: ObservableObject {
     }
 
     func sendNoteOn(_ pitch: UInt8, velocity: UInt8 = 127, channel: UInt8 = 0) {
-        audioUnit.sendNoteOnMessage(withPitch: pitch, velocity: velocity, channel: channel)
+        let transposedPitch = UInt8(Int(pitch) + currentOctave * 12)
+        audioUnit.sendNoteOnMessage(withPitch: transposedPitch, velocity: velocity, channel: channel)
+        activeMIDINotes.insert(transposedPitch)
     }
 
     func sendNoteOff(_ pitch: UInt8, releaseVelocity: UInt8 = 0, channel: UInt8 = 0) {
-        audioUnit.sendNoteOffMessage(withPitch: pitch, releaseVelocity: releaseVelocity, channel: channel)
+        let transposedPitch = UInt8(Int(pitch) + currentOctave * 12)
+        audioUnit.sendNoteOffMessage(withPitch: transposedPitch, releaseVelocity: releaseVelocity, channel: channel)
+        activeMIDINotes.remove(transposedPitch)
+    }
+    
+    func sendAllNotesOff(channel: UInt8 = 0) {
+        for pitch in activeMIDINotes {
+            audioUnit.sendNoteOffMessage(withPitch: pitch, releaseVelocity: 0, channel: channel)
+        }
+        activeMIDINotes.removeAll()
     }
 
     func sendAftertouch(_ pitch: UInt8, pressure: UInt8, channel: UInt8 = 0) {

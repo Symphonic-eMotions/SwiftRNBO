@@ -15,6 +15,7 @@
 		7C32BC8B2E30015700DE9F8D /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C32BC8A2E30015700DE9F8D /* AudioKitUI */; };
 		7C32BC8D2E3008EA00DE9F8D /* NativeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C32BC8C2E3008EA00DE9F8D /* NativeSlider.swift */; };
 		7C35C1812E3837B9008AAD79 /* parameterConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C35C1802E3837B9008AAD79 /* parameterConfig.json */; };
+		7C494EBE2E43B15800CA760B /* OctaafStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C494EBD2E43B15800CA760B /* OctaafStepperView.swift */; };
 		7C6CC7A12E34EBCC00CE52E9 /* midiMelody2.mid in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CC7A02E34EBCC00CE52E9 /* midiMelody2.mid */; };
 		AF4B40902B061DDD00FAACBF /* RNBOEventHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF4B408E2B061DDD00FAACBF /* RNBOEventHandler.mm */; };
 		AF4B40912B061DDD00FAACBF /* RNBOList.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF4B408F2B061DDD00FAACBF /* RNBOList.mm */; };
@@ -51,6 +52,7 @@
 		7C32BC842E2968E400DE9F8D /* midiMelody.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = midiMelody.mid; sourceTree = "<group>"; };
 		7C32BC8C2E3008EA00DE9F8D /* NativeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSlider.swift; sourceTree = "<group>"; };
 		7C35C1802E3837B9008AAD79 /* parameterConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = parameterConfig.json; sourceTree = "<group>"; };
+		7C494EBD2E43B15800CA760B /* OctaafStepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctaafStepperView.swift; sourceTree = "<group>"; };
 		7C6CC7A02E34EBCC00CE52E9 /* midiMelody2.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = midiMelody2.mid; sourceTree = "<group>"; };
 		AF4B408B2B061DDD00FAACBF /* RNBOEventHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RNBOEventHandler.hpp; sourceTree = "<group>"; };
 		AF4B408C2B061DDD00FAACBF /* RNBOList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBOList.h; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				AFF2B41D29A2090200068DD0 /* Sonik.swift */,
 				AFF2B41F29A2090200068DD0 /* ContentView.swift */,
 				AFFCBE432B09079000800A23 /* DescriptionView.swift */,
+				7C494EBD2E43B15800CA760B /* OctaafStepperView.swift */,
 				AFF2B4F729A20A3500068DD0 /* Sliders.swift */,
 				AFFCBE452B09575300800A23 /* SliderView.swift */,
 				AFEBC8E12B079BD80097D64B /* Buttons.swift */,
@@ -788,6 +791,7 @@
 				AFF2B4EB29A2094600068DD0 /* RNBOAudioEngine.swift in Sources */,
 				7C32BC832E29639B00DE9F8D /* RNBOAudioKitMIDIRouter.swift in Sources */,
 				AFF2B41E29A2090200068DD0 /* Sonik.swift in Sources */,
+				7C494EBE2E43B15800CA760B /* OctaafStepperView.swift in Sources */,
 				AFFCBE442B09079000800A23 /* DescriptionView.swift in Sources */,
 				7C32BC7C2E29631F00DE9F8D /* AudioKitMIDIManager.swift in Sources */,
 			);

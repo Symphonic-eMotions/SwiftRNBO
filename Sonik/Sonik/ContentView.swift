@@ -12,55 +12,65 @@ struct ContentView: View {
     @EnvironmentObject var sequencer: MIDISequencer
 
     var body: some View {
-            VStack(spacing: 10) {
-                if rnbo.showDescription {
-                    DescriptionView()
-                } else {
-                    Sliders()
-                    AudioKitKeyboard()
-
-                    HStack(spacing: 15) {
-                        Button {
-                            sequencer.loadMIDIFile(named: "midiMelody2")
-                        } label: {
-                            Label("", systemImage: "folder.fill")
-                        }
-
-                        Button {
-                            sequencer.generateArpeggioSequence(
-                                chordNotes: [60, 64, 67],
-                                pattern: [0, 1, 2, 1],
-                                octaveRange: 2,
-                                repeats: 4
-                            )
-                        } label: {
-                            Label("", systemImage: "music.note.list")
-                        }
-
-                        Button {
-                            sequencer.clearAllTracks()
-                        } label: {
-                            Label("", systemImage: "trash.fill")
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-
-                    HStack(spacing: 15) {
-                        Button {
-                            sequencer.play()
-                        } label: {
-                            Label("Play", systemImage: "play.circle.fill")
-                        }
+        VStack(spacing: 10) {
+            if rnbo.showDescription {
+                DescriptionView()
+            } else {
+                Sliders()
+                AudioKitKeyboard()
+                
+                HStack {
+                    
+                    OctaafStepperView()
+                        .frame(width: 150, alignment: .leading)
+                    
+                    VStack {
                         
-                        Button {
-                            sequencer.stop()
-                        } label: {
-                            Label("Stop", systemImage: "stop.circle.fill")
+                        HStack(spacing: 15) {
+                            Button {
+                                sequencer.loadMIDIFile(named: "midiMelody2")
+                            } label: {
+                                Label("", systemImage: "folder.fill")
+                            }
+                            
+                            Button {
+                                rnbo.sendAllNotesOff()
+                                sequencer.generateArpeggioSequence(
+                                    chordNotes: [60, 64, 67],
+                                    pattern: [0, 1, 2, 1],
+                                    octaveRange: 2,
+                                    repeats: 4
+                                )
+                            } label: {
+                                Label("", systemImage: "music.note.list")
+                            }
+                            
+                            Button {
+                                sequencer.clearAllTracks()
+                            } label: {
+                                Label("", systemImage: "trash.fill")
+                            }
                         }
+                        .buttonStyle(.borderedProminent)
+                        
+                        HStack(spacing: 15) {
+                            Button {
+                                sequencer.play()
+                            } label: {
+                                Label("Play", systemImage: "play.circle.fill")
+                            }
+                            
+                            Button {
+                                sequencer.stop()
+                            } label: {
+                                Label("Stop", systemImage: "stop.circle.fill")
+                            }
+                        }
+                        .buttonStyle(.bordered)
                     }
-                    .buttonStyle(.bordered)
                 }
             }
-            .padding()
         }
+        .padding()
+    }
 }
