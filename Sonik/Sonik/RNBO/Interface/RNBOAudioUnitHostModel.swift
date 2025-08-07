@@ -86,8 +86,6 @@ class RNBOAudioUnitHostModel: ObservableObject {
 
     let description: RNBODescription?
     
-    
-    
     init() {
         do {
             let url = Bundle.main.url(forResource: "description", withExtension: "json")!

@@ -7,11 +7,18 @@
 
 import AudioKit
 
+extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
 /// Een sequencer die MIDI-events laadt of genereert,
 /// en deze via DispatchQueue op tijd stuurt naar de RNBOAudioUnitHostModel.
 class MIDISequencer: ObservableObject {
     private let sequencer = AppleSequencer()
     private let callbackInstrument: MIDICallbackInstrument
+    private(set) var sourceTrackEvents: [MIDINoteData] = []
     @Published private(set) var noteEvents: [MIDINoteData] = []
     private var sequenceLength: TimeInterval = 0
     private var isPlaying = false
@@ -66,12 +73,55 @@ class MIDISequencer: ObservableObject {
         // We pakken de eerste track
         if let track = sequencer.tracks.first {
             noteEvents = track.getMIDINoteData()
+            sourceTrackEvents = noteEvents
             sequenceLength = sequencer.length.seconds
             track.setMIDIOutput(callbackInstrument.midiIn)
             sequencer.setLength(sequencer.length)
             print("✅ MIDI geladen: \(noteEvents.count) events, lengte \(sequenceLength)s")
         }
     }
+    
+    /// Herschrijf de actieve track met een octaafversie van de originele brondata
+    func applyOctaveShiftToSource() {
+        guard let rnbo = rnbo else { return }
+
+        // Verwijder bestaande doeltrack
+        for index in sequencer.tracks.indices.reversed() {
+            sequencer.tracks[index].clear()
+            sequencer.deleteTrack(trackIndex: index)
+        }
+
+        guard let track = sequencer.newTrack() else {
+            print("❌ Kon geen doeltrack aanmaken")
+            return
+        }
+        track.setMIDIOutput(callbackInstrument.midiIn)
+
+        // 0 = origineel, +1 = +12, -1 = -12
+        let transposeSemitones = rnbo.currentOctave * 12
+
+        // Transponeer noten en voeg toe
+        for event in sourceTrackEvents {
+            
+            let transposed = Int(event.noteNumber) + transposeSemitones
+            let clamped = transposed.clamped(to: 0...127)
+
+            let shiftedNote = MIDINoteData(
+                noteNumber: MIDINoteNumber(clamped),
+                velocity: event.velocity,
+                channel: event.channel,
+                duration: event.duration,
+                position: event.position
+            )
+            track.add(midiNoteData: shiftedNote)
+        }
+
+        noteEvents = track.getMIDINoteData()
+        sequenceLength = sequencer.length.seconds
+
+        print("⤴️ Octaaftranspositie toegepast op \(noteEvents.count) events")
+    }
+
 
     // Nieuwe methode voor Arpeggio-generatie
     func generateArpeggioSequence(
@@ -114,6 +164,8 @@ class MIDISequencer: ObservableObject {
         
         noteEvents = track.getMIDINoteData()
         sequenceLength = currentBeat * (60.0 / sequencer.tempo)
+        
+        sourceTrackEvents = noteEvents
         
         print("🎶 Strakke arpeggio sequence: \(noteEvents.count) events")
     }

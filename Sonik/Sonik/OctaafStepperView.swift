@@ -10,17 +10,20 @@ import SwiftUI
 
 struct OctaafStepperView: View {
     @EnvironmentObject var rnbo: RNBOAudioUnitHostModel
-
-    let minOctave = -6
-    let maxOctave = 6
+    @EnvironmentObject var sequencer: MIDISequencer
+    
+    let minOctave = -5
+    let maxOctave = 5
 
     var body: some View {
         VStack(spacing: 6) {
             HStack(spacing: 15) {
                 Button {
                     if rnbo.currentOctave > minOctave {
+                        sequencer.stop()
                         rnbo.sendAllNotesOff()
                         rnbo.currentOctave -= 1
+                        sequencer.applyOctaveShiftToSource()
                     }
                 } label: {
                     Image(systemName: "minus.circle")
@@ -30,8 +33,10 @@ struct OctaafStepperView: View {
 
                 Button {
                     if rnbo.currentOctave < maxOctave {
+                        sequencer.stop()
                         rnbo.sendAllNotesOff()
                         rnbo.currentOctave += 1
+                        sequencer.applyOctaveShiftToSource()
                     }
                 } label: {
                     Image(systemName: "plus.circle")

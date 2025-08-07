@@ -28,6 +28,7 @@ struct ContentView: View {
                         
                         HStack(spacing: 15) {
                             Button {
+                                rnbo.currentOctave = 0
                                 sequencer.loadMIDIFile(named: "midiMelody2")
                             } label: {
                                 Label("", systemImage: "folder.fill")
