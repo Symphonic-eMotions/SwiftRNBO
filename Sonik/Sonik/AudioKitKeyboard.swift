@@ -40,6 +40,7 @@
                 let interval: TimeInterval = 0.10
                 let gate: TimeInterval = 0.10
                 let fade: TimeInterval = 0.03
+                let tailPadding: TimeInterval = 1.0
 
                 rnbo.warmUpBySimulatedKeyboardTaps(
                     note: note,
@@ -48,7 +49,8 @@
                     interval: interval,
                     gate: gate,
                     silently: true,
-                    fade: fade
+                    fade: fade,
+                    tailPadding: tailPadding
                 )
             }
         }

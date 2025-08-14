@@ -83,7 +83,8 @@ extension RNBOAudioUnitHostModel {
         interval: TimeInterval,
         gate: TimeInterval,
         silently: Bool,
-        fade: TimeInterval
+        fade: TimeInterval,
+        tailPadding: TimeInterval
     ) {
         struct State { static var running = false }
         if State.running {
@@ -101,32 +102,35 @@ extension RNBOAudioUnitHostModel {
         print("[warmUpSimTap] ▶️ start: note=\(note) taps=\(taps) interval=\(interval)s gate=\(gate)s silently=\(silently)")
 
         func finish() {
-            // Herstel volume als we stil warm-up deden
-            if silently { rampSynthVolume(to: 1.0, over: fade) }
+            let recoveryDelay = silently ? tailPadding : 0.0
+            if silently {
+                DispatchQueue.main.asyncAfter(deadline: .now() + recoveryDelay) {
+                    self.rampSynthVolume(to: 1.0, over: fade)
+                }
+            }
             State.running = false
             print("[warmUpSimTap] ✅ klaar (\(taps)/\(taps))")
         }
-
+        
         func tapOnce() {
             guard count < taps else { finish(); return }
-
             count += 1
             let idx = count
-
+            
             self.sendNoteOn(note, velocity: vel)
             print("[warmUpSimTap] 🔔 tap \(idx)/\(taps): noteOn \(note)")
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + gate) {
                 self.sendNoteOff(note)
                 print("[warmUpSimTap] ⏹️ tap \(idx)/\(taps): noteOff \(note)")
-
+                
                 let wait = max(0, interval - gate)
                 DispatchQueue.main.asyncAfter(deadline: .now() + wait) {
                     tapOnce()
                 }
             }
         }
-
+        
         DispatchQueue.main.async { tapOnce() }
     }
 }
