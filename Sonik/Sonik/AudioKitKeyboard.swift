@@ -33,7 +33,7 @@
             }
             .onAppear {
                 
-                // voorbeeldparameters:
+                // Warming up buffers:
                 let note: UInt8 = 60
                 let velocity: UInt8 = 110
                 let taps = 12
