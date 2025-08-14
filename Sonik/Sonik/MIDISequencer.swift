@@ -20,6 +20,9 @@ class MIDISequencer: ObservableObject {
     private let callbackInstrument: MIDICallbackInstrument
     private(set) var sourceTrackEvents: [MIDINoteData] = []
     @Published private(set) var noteEvents: [MIDINoteData] = []
+    @Published var loopBeatsPerBar: Double = 4.0
+    @Published var loopSmallOverlapThresholdBeats: Double = 0.25
+    @Published var loopAutoPlay: Bool = true
     private var sequenceLength: TimeInterval = 0
     private var isPlaying = false
     private weak var rnbo: RNBOAudioUnitHostModel?
@@ -77,6 +80,8 @@ class MIDISequencer: ObservableObject {
             sequenceLength = sequencer.length.seconds
             track.setMIDIOutput(callbackInstrument.midiIn)
             sequencer.setLength(sequencer.length)
+            // Na inladen en output-koppeling:
+            quantizeLoopToContent()
             print("✅ MIDI geladen: \(noteEvents.count) events, lengte \(sequenceLength)s")
         }
     }
@@ -117,7 +122,8 @@ class MIDISequencer: ObservableObject {
         }
 
         noteEvents = track.getMIDINoteData()
-        sequenceLength = sequencer.length.seconds
+//        sequenceLength = sequencer.length.seconds
+        quantizeLoopToContent()
 
         print("⤴️ Octaaftranspositie toegepast op \(noteEvents.count) events")
     }
@@ -167,6 +173,8 @@ class MIDISequencer: ObservableObject {
         
         sourceTrackEvents = noteEvents
         
+        quantizeLoopToContent()
+        
         print("🎶 Strakke arpeggio sequence: \(noteEvents.count) events")
     }
 
@@ -205,5 +213,71 @@ class MIDISequencer: ObservableObject {
             noteEvents = t.getMIDINoteData()
             sequenceLength = sequencer.length.seconds
         }
+    }
+    private func clipActiveTrackToLoop(_ loopBeats: Double) {
+        guard let track = sequencer.tracks.first else { return }
+
+        let events = track.getMIDINoteData()
+        let clipped: [MIDINoteData] = events.compactMap { e in
+            let start = e.position.beats
+            // Noot start buiten de loop -> drop
+            guard start < loopBeats else { return nil }
+
+            let end = start + e.duration.beats
+            let newDur = max(0, min(end, loopBeats) - start)
+            guard newDur > 0 else { return nil }
+
+            var n = e
+            n.duration = Duration(beats: newDur)
+            return n
+        }
+
+        track.clear()
+        for n in clipped {
+            track.add(midiNoteData: n)
+        }
+
+        // Zorg dat de sequencerlengte exact op de loop staat
+        sequencer.setLength(Duration(beats: loopBeats))
+
+        // State bijwerken
+        noteEvents = track.getMIDINoteData()
+        sequenceLength = sequencer.length.seconds
+    }
+    
+    private func lastEventEndInBeats(from events: [MIDINoteData]) -> Double {
+        events.map { $0.position.beats + $0.duration.beats }.max() ?? 0
+    }
+    
+    func quantizeLoopToContent() {
+        let beatsPerBar = loopBeatsPerBar
+        let smallOverlapThresholdBeats = loopSmallOverlapThresholdBeats
+        let autoPlay = loopAutoPlay
+
+        // 1) Laatste eindtijd in beats
+        let lastEnd = lastEventEndInBeats(from: noteEvents)
+
+        // 2) Hele maten met “kleine overlap -> naar beneden”
+        let fullBars = floor(lastEnd / beatsPerBar)
+        let remainder = lastEnd - (fullBars * beatsPerBar)
+
+        let quantizedBeats: Double = {
+            if remainder <= smallOverlapThresholdBeats {
+                return max(fullBars * beatsPerBar, beatsPerBar) // min 1 maat
+            } else {
+                return (fullBars + 1) * beatsPerBar
+            }
+        }()
+
+        // 3) Lengte + clip + loop
+        sequencer.setLength(Duration(beats: quantizedBeats))
+        clipActiveTrackToLoop(quantizedBeats)
+
+        sequencer.setLoopInfo(Duration(beats: quantizedBeats), loopCount: 0)
+        sequencer.enableLooping()
+
+        if autoPlay { play() }
+
+        print("🔁 Loop op \(quantizedBeats) beats (\(quantizedBeats / beatsPerBar) maten)")
     }
 }
