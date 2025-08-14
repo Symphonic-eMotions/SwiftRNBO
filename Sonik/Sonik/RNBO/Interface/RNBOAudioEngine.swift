@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import AudioToolbox
 
 extension RNBOAudioEngine {
     /// AVAudioUnit-node van de RNBO Audio Unit
@@ -14,65 +15,42 @@ extension RNBOAudioEngine {
     }
 }
 
-class RNBOAudioEngine {
+final class RNBOAudioEngine {
+    // Core
     private let engine = AVAudioEngine()
     private var avAudioUnit: AVAudioUnit?
+
+    // Nodes
     private let playerNode = AVAudioPlayerNode()
-    private let audioFile: AVAudioFile?
     private let distortionEffect: AVAudioUnitDistortion
-    private let inputMixer: AVAudioMixerNode
-    private let microphoneVolumeMixer: AVAudioMixerNode
-    
+    private let inputMixer = AVAudioMixerNode()
+    private let microphoneVolumeMixer = AVAudioMixerNode()
+    private let rnboOutputMixer = AVAudioMixerNode() // <-- eigen output-mixer voor RNBO
+
+    // Optional file player
+    private let audioFile: AVAudioFile?
+
     public var audioUnit: RNBOAudioUnit {
         avAudioUnit!.auAudioUnit as! RNBOAudioUnit
     }
-    
-    private func initInput() {
-        let input = engine.inputNode
-        // let format = input.inputFormat(forBus: 0)
-        let format = avAudioUnit!.inputFormat(forBus: 0)
 
-        if format.channelCount > 0 {
-            if input.outputFormat(forBus: 0).sampleRate == format.sampleRate {
-                engine.connect(input, to: microphoneVolumeMixer, format: format)
-                engine.connect(microphoneVolumeMixer, to: inputMixer, format: format)
-                engine.connect(inputMixer, to: avAudioUnit!, format: format)
-            } else {
-                print("Could not connect input node: sample rate mismatch")
-            }
-        }
-    }
-    
-    func setMicrophoneAmplitude(_ amp: Float) {
-        microphoneVolumeMixer.outputVolume = amp
-    }
+    // MARK: - Init
 
     init() {
-        inputMixer = AVAudioMixerNode()
-        microphoneVolumeMixer = AVAudioMixerNode()
-
+        // AudioSession
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            
-            // KRITIEKE FIX: Forceer dezelfde buffer duration op beide devices
-            // Dit elimineert het hoofdprobleem
-            let targetBufferDuration = 0.010 // 10ms zoals iPad
+            let targetBufferDuration = 0.010
             try audioSession.setPreferredIOBufferDuration(targetBufferDuration)
-            
-            // KRITIEKE FIX: Probeer audio session sample rate op 48kHz te forceren
-            // Dit voorkomt sample rate conversion
-            try audioSession.setPreferredSampleRate(48000) // Match system sample rate
+            try audioSession.setPreferredSampleRate(48000)
             try audioSession.setPreferredIOBufferDuration(0.010)
             try audioSession.setActive(true)
-            
             try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers, .allowAirPlay])
-            
-            // Log actual values voor debugging
+
             print("Actual sample rate: \(audioSession.sampleRate)")
             print("Actual buffer duration: \(audioSession.ioBufferDuration)")
             print("Actual input channels: \(audioSession.inputNumberOfChannels)")
             print("Actual output channels: \(audioSession.outputNumberOfChannels)")
-            
         } catch {
             print("Audio session error: \(error.localizedDescription)")
         }
@@ -80,99 +58,86 @@ class RNBOAudioEngine {
         distortionEffect = AVAudioUnitDistortion()
         distortionEffect.loadFactoryPreset(.multiEcho1)
 
-        if let audioFileURL = Bundle.main.url(forResource: "Synth", withExtension: "aif") {
-            do {
-                audioFile = try AVAudioFile(forReading: audioFileURL)
-            } catch {
+        // Optional demo file
+        if let url = Bundle.main.url(forResource: "Synth", withExtension: "aif") {
+            do { audioFile = try AVAudioFile(forReading: url) } catch {
                 print("Error initializing audio file: \(error)")
                 audioFile = nil
             }
         } else {
-            print("Audio file not found")
             audioFile = nil
         }
 
-        let type = kAudioUnitType_Effect
-        let subType: OSType = 0x71717171
-        let manufacturer: OSType = 0x70707070
-
-        let description = AudioComponentDescription(
-            componentType: type,
-            componentSubType: subType,
-            componentManufacturer: manufacturer,
+        // RNBO AU instantiatie
+        let desc = AudioComponentDescription(
+            componentType: kAudioUnitType_Effect,
+            componentSubType: 0x71717171,
+            componentManufacturer: 0x70707070,
             componentFlags: 0,
             componentFlagsMask: 0
         )
+        AUAudioUnit.registerSubclass(RNBOAudioUnit.self, as: desc, name: "RNBOAudioUnit", version: 1)
 
-        AUAudioUnit.registerSubclass(RNBOAudioUnit.self, as: description, name: "RNBOAudioUnit", version: 1)
-
-        AVAudioUnit.instantiate(with: description, options: .loadOutOfProcess) { avAudioUnit, error in
+        AVAudioUnit.instantiate(with: desc, options: .loadOutOfProcess) { avAudioUnit, error in
             guard let avAudioUnit = avAudioUnit, error == nil else {
                 print("Error instantiating AVAudioUnit: \(error!.localizedDescription)")
                 return
             }
-
             self.avAudioUnit = avAudioUnit
-
-            DispatchQueue.main.async {
-                self.setupAudioChain()
-            }
+            DispatchQueue.main.async { self.setupAudioChain() }
         }
     }
+
+    // MARK: - Graph
 
     private func setupAudioChain() {
         guard let avAudioUnit = avAudioUnit else {
             print("avAudioUnit not ready!")
             return
         }
-//        engine.attach(distortionEffect)
+
+        // Attach
         engine.attach(inputMixer)
         engine.attach(microphoneVolumeMixer)
         engine.attach(playerNode)
         engine.attach(avAudioUnit)
+        engine.attach(rnboOutputMixer)
 
         microphoneVolumeMixer.outputVolume = 0.0
 
+        // Input routing
         let input = engine.inputNode
         let inputFormat = input.outputFormat(forBus: 0)
-        let audioUnitInputFormat = avAudioUnit.inputFormat(forBus: 0)
+        let auInFormat = avAudioUnit.inputFormat(forBus: 0)
 
-        // Match input node sample rate to audio unit's input sample rate
-        if inputFormat.sampleRate != audioUnitInputFormat.sampleRate {
+        if inputFormat.sampleRate != auInFormat.sampleRate {
             print("Input node sample rate: \(inputFormat.sampleRate)")
-            print("AudioUnit sample rate: \(audioUnitInputFormat.sampleRate)")
-
-            // Fix mismatch by converting formats via mixers
+            print("AudioUnit sample rate: \(auInFormat.sampleRate)")
             engine.connect(input, to: microphoneVolumeMixer, format: inputFormat)
             engine.connect(microphoneVolumeMixer, to: inputMixer, format: inputFormat)
-
-            // Use mixer to match sample rate
-            engine.connect(inputMixer, to: avAudioUnit, format: audioUnitInputFormat)
+            engine.connect(inputMixer, to: avAudioUnit, format: auInFormat)
         } else {
-            // Direct connection if rates match
             engine.connect(input, to: microphoneVolumeMixer, format: inputFormat)
             engine.connect(microphoneVolumeMixer, to: inputMixer, format: inputFormat)
             engine.connect(inputMixer, to: avAudioUnit, format: inputFormat)
         }
 
-        // Player node chain (optional, for audio file playback)
+        // RNBO output -> eigen mixer -> mainMixer
+        let auOutFormat = avAudioUnit.outputFormat(forBus: 0)
+        engine.connect(avAudioUnit, to: rnboOutputMixer, format: auOutFormat)
+        engine.connect(rnboOutputMixer, to: engine.mainMixerNode, format: auOutFormat)
+        rnboOutputMixer.outputVolume = 1.0
+
+        // Optional player
         if let audioFile = audioFile {
-            let playerFormat = audioFile.processingFormat
-            engine.connect(playerNode, to: inputMixer, format: playerFormat)
+            engine.connect(playerNode, to: inputMixer, format: audioFile.processingFormat)
         }
 
-        // Audio Unit to main mixer
-        let audioUnitOutputFormat = avAudioUnit.outputFormat(forBus: 0)
-        engine.connect(avAudioUnit, to: engine.mainMixerNode, format: audioUnitOutputFormat)
-
-        // Main mixer to output node
+        // main -> output
         let outputFormat = engine.outputNode.inputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: outputFormat)
 
         engine.prepare()
-
-        // must be called only when app is didBecomeActive
-        // play()
         do {
             try engine.start()
             print("Audio Engine started successfully.")
@@ -181,6 +146,13 @@ class RNBOAudioEngine {
         }
     }
 
+    // MARK: - Input
+
+    func setMicrophoneAmplitude(_ amp: Float) {
+        microphoneVolumeMixer.outputVolume = amp
+    }
+
+    // MARK: - Convenience
 
     func getAudioUnit() -> RNBOAudioUnit {
         return avAudioUnit!.auAudioUnit as! RNBOAudioUnit
@@ -188,19 +160,52 @@ class RNBOAudioEngine {
 
     func playAudioFile() {
         playerNode.stop()
-        guard let audioFile = audioFile else {
-            return
-        }
-
+        guard let audioFile = audioFile else { return }
         playerNode.rate = 1
-        playerNode.scheduleFile(audioFile, at: nil) {
-            print("Audio playback finished")
-        }
-
+        playerNode.scheduleFile(audioFile, at: nil) { print("Audio playback finished") }
         playerNode.play()
     }
 
     func pauseAudioFile() {
         playerNode.pause()
+    }
+}
+
+// MARK: - RNBO output volume helpers
+
+extension RNBOAudioEngine {
+    func setRNBOMute(_ muted: Bool) {
+        DispatchQueue.main.async {
+            self.rnboOutputMixer.outputVolume = muted ? 0.0 : 1.0
+        }
+    }
+
+    /// Zachte volumeverandering om klikjes te vermijden
+    func rampRNBOOutputVolume(to target: Float, over duration: TimeInterval = 0.08) {
+        let steps = max(2, Int(duration * 60)) // ~60 Hz
+        let start = rnboOutputMixer.outputVolume
+        let delta = (target - start) / Float(steps)
+        var i = 0
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now(), repeating: duration / Double(steps))
+        timer.setEventHandler { [weak self] in
+            guard let self = self else { timer.cancel(); return }
+            i += 1
+            if i >= steps {
+                self.rnboOutputMixer.outputVolume = target
+                timer.cancel()
+            } else {
+                self.rnboOutputMixer.outputVolume = start + Float(i) * delta
+            }
+        }
+        timer.resume()
+    }
+
+    /// Handig als je vooraf weet hoe lang de warm-up duurt
+    func temporarilyMuteRNBO(for seconds: TimeInterval, fade: TimeInterval = 0.02) {
+        rampRNBOOutputVolume(to: 0.0, over: fade)
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.rampRNBOOutputVolume(to: 1.0, over: fade)
+        }
     }
 }

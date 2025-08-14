@@ -31,6 +31,26 @@
                 .frame(height: 100)
                 .frame(minWidth: 600)
             }
+            .onAppear {
+                
+                // voorbeeldparameters:
+                let note: UInt8 = 60
+                let velocity: UInt8 = 110
+                let taps = 12
+                let interval: TimeInterval = 0.10
+                let gate: TimeInterval = 0.10
+                let fade: TimeInterval = 0.03
+
+                rnbo.warmUpBySimulatedKeyboardTaps(
+                    note: note,
+                    velocity: velocity,
+                    taps: taps,
+                    interval: interval,
+                    gate: gate,
+                    silently: true,
+                    fade: fade
+                )
+            }
         }
     }
 

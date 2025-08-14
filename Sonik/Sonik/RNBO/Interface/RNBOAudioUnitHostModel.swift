@@ -70,13 +70,71 @@ extension RNBOAudioUnitHostModel {
     }
 }
 
-class RNBOAudioUnitHostModel: ObservableObject {
-    
+extension RNBOAudioUnitHostModel {
+
+    /// Simuleert handmatige taps via dezelfde codepad als je on-screen keyboard.
+    /// - Parameters:
+    ///   - silently: zet volume tijdelijk uit met fade, en herstelt het aan het einde
+    ///   - fade: duur van fade in/uit bij silently
+    func warmUpBySimulatedKeyboardTaps(
+        note: UInt8,
+        velocity: UInt8,
+        taps: Int,
+        interval: TimeInterval,
+        gate: TimeInterval,
+        silently: Bool,
+        fade: TimeInterval
+    ) {
+        struct State { static var running = false }
+        if State.running {
+            print("[warmUpSimTap] ⏳ Al bezig—overslaan")
+            return
+        }
+        State.running = true
+
+        let vel = UInt8(max(1, min(127, Int(velocity))))
+        var count = 0
+
+        // Stil warm-uppen? Eerst zacht naar 0
+        if silently { rampSynthVolume(to: 0.0, over: fade) }
+
+        print("[warmUpSimTap] ▶️ start: note=\(note) taps=\(taps) interval=\(interval)s gate=\(gate)s silently=\(silently)")
+
+        func finish() {
+            // Herstel volume als we stil warm-up deden
+            if silently { rampSynthVolume(to: 1.0, over: fade) }
+            State.running = false
+            print("[warmUpSimTap] ✅ klaar (\(taps)/\(taps))")
+        }
+
+        func tapOnce() {
+            guard count < taps else { finish(); return }
+
+            count += 1
+            let idx = count
+
+            self.sendNoteOn(note, velocity: vel)
+            print("[warmUpSimTap] 🔔 tap \(idx)/\(taps): noteOn \(note)")
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + gate) {
+                self.sendNoteOff(note)
+                print("[warmUpSimTap] ⏹️ tap \(idx)/\(taps): noteOff \(note)")
+
+                let wait = max(0, interval - gate)
+                DispatchQueue.main.asyncAfter(deadline: .now() + wait) {
+                    tapOnce()
+                }
+            }
+        }
+
+        DispatchQueue.main.async { tapOnce() }
+    }
+}
+
+final class RNBOAudioUnitHostModel: ObservableObject {
     private let audioEngine = RNBOAudioEngine()
     private var _audioUnit: RNBOAudioUnit!
-    public var audioUnit: RNBOAudioUnit {
-        _audioUnit
-    }
+    public var audioUnit: RNBOAudioUnit { _audioUnit }
     private let eventHandler = RNBOEventHandler()
     @Published var parameters: [RNBOParameter]
     @Published var parameterConfigs: [ParameterConfig]
@@ -186,5 +244,17 @@ class RNBOAudioUnitHostModel: ObservableObject {
     func connectEventHandler() {
         audioUnit.setEventHandler(eventHandler)
         eventHandler.rnbo = self
+    }
+    
+    func temporarilyMuteSynth(for seconds: TimeInterval, fade: TimeInterval = 0.02) {
+        audioEngine.temporarilyMuteRNBO(for: seconds, fade: fade)
+    }
+    
+    func setSynthMuted(_ muted: Bool) {
+        audioEngine.setRNBOMute(muted)
+    }
+    
+    func rampSynthVolume(to target: Float, over duration: TimeInterval = 0.08) {
+        audioEngine.rampRNBOOutputVolume(to: target, over: duration)
     }
 }
