@@ -135,11 +135,32 @@ extension RNBOAudioUnitHostModel {
     }
 }
 
+extension RNBOAudioUnitHostModel {
+    @discardableResult
+    func setParameterValueNormalized(byId id: String, to value: Double) -> Bool {
+        guard let idx = paramIndexById[id] else {
+            print("⚠️ setParameterValueNormalized: paramId '\(id)' niet gevonden")
+            return false
+        }
+        let v = value.clamped(to: 0...1)
+        audioUnit.setParameterValueNormalized(idx, valueNormalized: Float(v))
+        // Houd lokale mirror bij (voor UI sync)
+        parameters[idx].valueNormalized = v
+        return true
+    }
+
+    func getParameterValueNormalized(byId id: String) -> Double? {
+        guard let idx = paramIndexById[id] else { return nil }
+        return parameters[idx].valueNormalized
+    }
+}
+
 final class RNBOAudioUnitHostModel: ObservableObject {
     private let audioEngine = RNBOAudioEngine()
     private var _audioUnit: RNBOAudioUnit!
     public var audioUnit: RNBOAudioUnit { _audioUnit }
     private let eventHandler = RNBOEventHandler()
+    private var paramIndexById: [String: Int] = [:]
     @Published var parameters: [RNBOParameter]
     @Published var parameterConfigs: [ParameterConfig]
     @Published var showDescription: Bool = false
@@ -162,7 +183,25 @@ final class RNBOAudioUnitHostModel: ObservableObject {
         let localParameters = description?.getParametersArray() ?? []
         self.parameters = localParameters
         self.parameterConfigs = Self.loadParameterConfiguration(from: localParameters)
+        rebuildParamIndexMap()
     }
+    
+    private func rebuildParamIndexMap() {
+        self.paramIndexById = Dictionary(uniqueKeysWithValues:
+            self.parameters.enumerated().map { ($1.id, $0) }
+        )
+    }
+    
+    // Toon alleen zichtbare parameters uit parameterConfig.json voor UI-keuze
+    func visibleParameterConfigs() -> [ParameterConfig] {
+        parameterConfigs.filter { $0.visible }
+    }
+
+    // UI-naam (displayName) voor een paramId; valt terug op id als niet gevonden
+    func parameterDisplayName(for id: String) -> String {
+        parameterConfigs.first(where: { $0.id == id })?.displayName ?? id
+    }
+
 
     func playAudioFile() {
         audioEngine.playAudioFile()

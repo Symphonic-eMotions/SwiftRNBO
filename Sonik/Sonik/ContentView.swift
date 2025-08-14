@@ -16,7 +16,8 @@ struct ContentView: View {
             if rnbo.showDescription {
                 DescriptionView()
             } else {
-                Sliders()
+                DualXYPadsView()
+//                Sliders()
                 AudioKitKeyboard()
                 
                 HStack {

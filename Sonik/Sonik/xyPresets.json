@@ -1,0 +1,33 @@
+[
+  {
+    "id": "subtractive",
+    "name": "Subtractive",
+    "pads": [
+      {
+        "id": "cut-res",
+        "title": "Cutoff / Resonance",
+        "xParamId": "cutoff",
+        "yParamId": "resonance",
+        "xMin": 0.05,
+        "xMax": 1.0,
+        "yMin": 0.0,
+        "yMax": 1.0,
+        "xInvert": false,
+        "yInvert": false
+      },
+      {
+        "id": "env-mix",
+        "title": "EnvAmt / Mix",
+        "xParamId": "env_amount",
+        "yParamId": "mix",
+        "xMin": 0.0,
+        "xMax": 1.0,
+        "yMin": 0.0,
+        "yMax": 1.0,
+        "xInvert": false,
+        "yInvert": true
+      }
+    ]
+  }
+]
+
